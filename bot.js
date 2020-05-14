@@ -34,7 +34,7 @@ fs.readdir("./commands/", (err, files) => {
 
     jsFiles.forEach((f, i) => {
         var fileGet = require(`./commands/${f}`);
-        console.log(`--{File ${f} is loaded}--`);
+        console.log(`--{ File ${f} is loaded }--`);
         var commandName = fileGet.help.name;
         bot.commands.set(commandName.toLowerCase(), fileGet);
     })
@@ -55,6 +55,7 @@ bot.on("ready", async () => {
     //Initialize roles
     newcomerRole = guild.roles.cache.find(role => role.name === 'Newcomer');
     verifiedRole = guild.roles.cache.find(role => role.name === 'Verified');
+
 });
 
 bot.on("guildMemberAdd", member => {
@@ -98,8 +99,11 @@ bot.on('messageReactionAdd', async (messageReaction, user) => {
     }
 });
 
-bot.on('messageReactionRemove', (reaction, user) => {
-    console.log('a reaction has been removed');
+bot.on('messageReactionRemove', (messageReaction, user) => {
+    if (user.bot) return;
+    const { message, emoji } = messageReaction;
+
+    console.log(`${user.username} removed a reaction: ${emoji.name}`);
 });
 
 bot.on("message", async message => {

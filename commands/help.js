@@ -3,8 +3,8 @@ const discord = require('discord.js');
 module.exports.run = async (bot, message, args) => {
     try {
         var text = "**__Commands__**\n" +
-            "!botinfo - Get the bots info\n" +
-            "!serverinfo - Get the server info\n" +
+            "!bot - Get the bots info\n" +
+            "!server - Get the server info\n" +
             "!database - Get all data records in database\n" +
             "!database <@user> - Get data from that specific user\n" +
             "!database <@user> <nickname> - Set nickname for that specific user\n" +
