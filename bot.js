@@ -2,8 +2,9 @@ const discord = require('discord.js');
 const botConfig = require('./botConfig.json');
 const fs = require("fs");
 
+
 // Initialize Discord Bot
-const bot = new discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION']});
+const bot = new discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 bot.commands = new discord.Collection();
 
 const serverStats = {
@@ -38,6 +39,7 @@ fs.readdir("./commands/", (err, files) => {
         var commandName = fileGet.help.name;
         bot.commands.set(commandName.toLowerCase(), fileGet);
     })
+
 });
 
 bot.on("ready", async () => {
@@ -56,6 +58,18 @@ bot.on("ready", async () => {
     newcomerRole = guild.roles.cache.find(role => role.name === 'Newcomer');
     verifiedRole = guild.roles.cache.find(role => role.name === 'Verified');
 
+    //Initialize databases
+    bot.stupidQuestionTracker = require("./jsonDb/stupidQuestionTracker.json");
+    bot.ressurection = require("./jsonDb/ressurection.json");
+
+
+    let ressurectionCount = bot.ressurection['resurrections'].count + 1;
+    bot.ressurection['resurrections'] = {
+        count: ressurectionCount
+    };
+    fs.writeFile("./jsonDb/ressurection.json", JSON.stringify(bot.ressurection, null, 4), err => {
+        if (err) throw err;
+    });
 });
 
 bot.on("guildMemberAdd", member => {
@@ -83,11 +97,11 @@ bot.on("presenceUpdate", function (oldMember, newMember) {
 
 bot.on('messageReactionAdd', async (messageReaction, user) => {
     // When we receive a reaction we check if the reaction is partial or not
-    if(messageReaction.partial){
+    if (messageReaction.partial) {
         // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
-        try{
+        try {
             await messageReaction.fetch();
-        } catch(error){
+        } catch (error) {
             console.log('Something went wrong when fetching the message: ', error);
             return;
         }
@@ -95,7 +109,8 @@ bot.on('messageReactionAdd', async (messageReaction, user) => {
     if (user.bot) return;
     const { message, emoji } = messageReaction;
     if (emoji.name === '✅' && message.channel.id === verifyChannel.id && message.id === '710220491088199771') {
-        messageReaction.message.guild.members.cache.get(user.id).roles.add(verifiedRole)
+        messageReaction.message.guild.members.cache.get(user.id).roles.add(verifiedRole);
+        messageReaction.message.guild.members.cache.get(user.id).roles.remove(newcomerRole);
     }
 });
 
