@@ -38,9 +38,11 @@ fs.readdir("./commands/", (err, files) => {
         console.log(`--{ File ${f} is loaded }--`);
         var commandName = fileGet.help.name;
         bot.commands.set(commandName.toLowerCase(), fileGet);
-    })
+    });
 
 });
+
+// TODO : MAKE A JS FILE FOR INTIOALIZING TEXT CHANNELS
 
 bot.on("ready", async () => {
     //Extra check to see if bot is ready
@@ -62,7 +64,6 @@ bot.on("ready", async () => {
     bot.stupidQuestionTracker = require("./jsonDb/stupidQuestionTracker.json");
     bot.ressurection = require("./jsonDb/ressurection.json");
 
-
     let ressurectionCount = bot.ressurection['resurrections'].count + 1;
     bot.ressurection['resurrections'] = {
         count: ressurectionCount
@@ -70,6 +71,8 @@ bot.on("ready", async () => {
     fs.writeFile("./jsonDb/ressurection.json", JSON.stringify(bot.ressurection, null, 4), err => {
         if (err) throw err;
     });
+    console.log(verifyChannel);
+
 });
 
 bot.on("guildMemberAdd", member => {
@@ -80,7 +83,6 @@ bot.on("guildMemberAdd", member => {
     bot.channels.cache.get(serverStats.botCountID).setName(`Bot Count :\t ${member.guild.members.cache.filter(m => m.user.bot).size}`);
 
     //When a new person joins the server
-    generalChannel.send(`Welcome to the server ${member.user.username}!`);
     member.roles.add(newcomerRole);
 });
 
@@ -96,6 +98,7 @@ bot.on("presenceUpdate", function (oldMember, newMember) {
 });
 
 bot.on('messageReactionAdd', async (messageReaction, user) => {
+    
     // When we receive a reaction we check if the reaction is partial or not
     if (messageReaction.partial) {
         // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
@@ -106,11 +109,16 @@ bot.on('messageReactionAdd', async (messageReaction, user) => {
             return;
         }
     }
+
     if (user.bot) return;
     const { message, emoji } = messageReaction;
+
     if (emoji.name === '✅' && message.channel.id === verifyChannel.id && message.id === '710220491088199771') {
         messageReaction.message.guild.members.cache.get(user.id).roles.add(verifiedRole);
         messageReaction.message.guild.members.cache.get(user.id).roles.remove(newcomerRole);
+        message.reactions.cache.first().remove(messageReaction.message.guild.members.cache.get(user.id));
+
+        generalChannel.send(`Welcome to the server ${messageReaction.message.guild.members.cache.get(user.id)}!`);
     }
 });
 

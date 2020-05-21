@@ -28,6 +28,10 @@ module.exports.run = async (bot, message, args) => {
                 fs.writeFile("./jsonDb/stupidQuestionTracker.json", JSON.stringify(bot.stupidQuestionTracker, null, 4), err => {
                     if (err) throw err;
                 });
+                if(stupidQuestionTrackerCount%3 === 0){
+                    // Add a mute role!
+                    console.log("Do something!");
+                }
             } else {
                 bot.stupidQuestionTracker['users'][bot.stupidQuestionTracker['totalUsers'].xUsers] = {
                     username: message.mentions.users.first().username,
@@ -48,10 +52,6 @@ module.exports.run = async (bot, message, args) => {
     } else {
         message.channel.send("My masters have not told me to listen to you!");
     }
-
-
-
-
 
 }
 
