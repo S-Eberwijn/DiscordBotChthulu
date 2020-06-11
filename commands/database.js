@@ -1,4 +1,4 @@
-const database = require("../database.json");
+const database = require("../jsonDb/database.json");
 const mysql = require("mysql");
 
 module.exports.run = async (bot, message, args) => {
@@ -68,5 +68,7 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "database"
+    name: "database",
+    description: "Database command (work in progress)",
+    category: "Dungeons & Dragons"
 }

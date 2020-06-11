@@ -7,11 +7,13 @@ module.exports.run = async (bot, message, args) => {
         .setThumbnail(message.guild.iconURL)
         .addField("Bot name", bot.user.username)
         .addField("You joined at", message.member.joinedAt)
-        .addField("Total Members", message.guild.memberCount);
+        .addField(`Total Members: ${message.guild.members.cache.filter(m => m.user.bot).size}`);
     return message.channel.send(serverEmbed);
 }
 
 module.exports.help = {
-    name: "serverInfo"
+    name: "serverInfo",
+    description: "Gives information about the discord server",
+    category: "Information"
 }
 

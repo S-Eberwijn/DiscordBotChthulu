@@ -46,7 +46,7 @@ module.exports.run = async (bot, message, args) => {
                 message.channel.send("Succesful added to the database!");
             }
         } else {
-            message.channel.send("Use: !stupid <mention>");
+            message.channel.send("Use: !stupid <mention user>");
         }
 
     } else {
@@ -56,5 +56,7 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "stupid"
+    name: "stupid",
+    description: "Whenever someone asks a stupid question, DM's use this command",
+    category: "Dungeons & Dragons"
 }
