@@ -4,11 +4,11 @@
             "guildName": "Cthulhu Test Server",
             "guildId": "532525442201026580",
             "verifyChannel": false,
-            "serverStats": false,
+            "serverStats": true,
             "serverStatsChannels": {
-                "botCountChannelId": "",
-                "onlineUsersChannelId": "",
-                "totalUsersChannelId": ""
+                "botCountChannelId": "720715345710809198",
+                "onlineUsersChannelId": "720715346272583792",
+                "totalUsersChannelId": "720715347191267478"
             }
         }
     ]

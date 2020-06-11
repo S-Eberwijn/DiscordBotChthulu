@@ -7,9 +7,8 @@ module.exports.run = async (bot, message, args) => {
         .setAuthor(`🤖 ${bot.user.username}#${bot.user.discriminator} 🤖`)
         .setDescription(`I am here to serve my masters: \*\*${bot.users.cache.find(user => user.id === '241273372892200963').username}\*\* & \*\*${bot.users.cache.find(user => user.id === '228499662607351809').username}\*\*`)
         .setColor("#29e53f")
-        .addField("\_\_\*\*DESCIPTION\*\*\_\_", "Deep in the sea. I wanna swim. Leaving my worries. Far away from me. I need a break. I need to close my eyes. Go far away. And see the ancient skies. I need to know. If I'm still alive. Go far away. And see my roots are fine")
+        .addField("\_\_\*\*DESCIPTION\*\*\_\_", "---------------------------------------------------------------------------\nDeep in the sea. I wanna swim. Leaving my worries. Far away from me. I need a break. I need to close my eyes. Go far away. And see the ancient skies. I need to know. If I'm still alive. Go far away. And see my roots are fine\n---------------------------------------------------------------------------")
         .setThumbnail(bot.user.displayAvatarURL())
-        .addField('\u200B', '---------------------------------------------------------------------------')
         .addFields(
             { name: '\_\_\*\*BOT NAME\*\*\_\_', value: `${bot.user.username}`, inline: false },
             { name: '\_\_\*\*ACTIVE SERVERS\*\*\_\_', value: `Active in \*\*${bot.guilds.cache.size}\*\* server(s)`, inline: true }

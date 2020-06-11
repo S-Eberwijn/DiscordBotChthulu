@@ -1,14 +1,18 @@
-const discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args) => {
-    var serverEmbed = new discord.MessageEmbed()
-        .setDescription("server info")
-        .setColor("#229444")
-        .setThumbnail(message.guild.iconURL)
-        .addField("Bot name", bot.user.username)
-        .addField("You joined at", message.member.joinedAt)
-        .addField(`Total Members: ${message.guild.members.cache.filter(m => m.user.bot).size}`);
-    return message.channel.send(serverEmbed);
+    let sicon = message.guild.iconURL;
+    let serverembed = new MessageEmbed()
+        .setDescription("Server Information")
+        .setColor("#ff0000")
+        .setThumbnail(sicon)
+        .addField("Server Name", message.guild.name)
+        .addField("Created On", message.guild.createdAt)
+        .addField("You Joined", message.member.joinedAt)
+        .addField("Total Members", message.guild.memberCount)
+        .addField("Bot Version", "2.4.4")
+
+    message.channel.send(serverembed);
 }
 
 module.exports.help = {

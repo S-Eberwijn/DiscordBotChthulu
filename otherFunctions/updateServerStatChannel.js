@@ -1,11 +1,25 @@
- async function updateServerStatChannels() {
-    
-     //TODO: make it so it can run on multiple servers
-     //Change channel names
-     if (bot.initialization.initialized[0].serverStatsChannels.botCountChannelId != '' && bot.initialization.initialized[0].serverStatsChannels.totalUsersChannelId != '') {
+exports.updateServerStatChannels = function(bot, member) {
+
+    // Declare which guild its for
+    let guildNumber;
+    for (let i = 0; i < bot.initialization.initialized.length; i++){
+        if(bot.initialization.initialized[i].guildId == member.guild.id){
+            guildNumber = i;
+        }
+    } 
+
+    // Declare Server Stat Channels
+    let botCountChannel = bot.channels.cache.get(bot.initialization.initialized[guildNumber].serverStatsChannels.botCountChannelId);
+    let onlineUsersChannel = bot.channels.cache.get(bot.initialization.initialized[guildNumber].serverStatsChannels.onlineUsersChannelId);
+    let totalUsersChannel = bot.channels.cache.get(bot.initialization.initialized[guildNumber].serverStatsChannels.totalUsersChannelId);
+    //TODO: make it so it can run on multiple servers
+
+    // Change channel names
+    if (botCountChannel && onlineUsersChannel && totalUsersChannel) {
         
-         await bot.channels.cache.get(bot.initialization.initialized[0].serverStatsChannels.botCountChannelId).setName(`Bot Count : ${guild.members.cache.filter(m => m.user.bot).size}`);
-         //bot.channels.cache.get(bot.initialization.initialized[0].serverStatsChannels.onlineUsersChannelId).setName(`Online Users : ${guild.members.cache.filter(m => !m.user.bot && (m.user.presence.status === "online" || m.user.presence.status === "idle" || m.user.presence.status === "dnd")).size}`);
-         await bot.channels.cache.get(bot.initialization.initialized[0].serverStatsChannels.totalUsersChannelId).setName(`Total Users : ${guild.members.cache.filter(m => !m.user.bot).size}`);
-     }
- }
+        botCountChannel.setName(`Bot Count : ${member.guild.members.cache.filter(m => m.user.bot).size}`);
+        onlineUsersChannel.setName(`Online Users : ${member.guild.members.cache.filter(m => !m.user.bot && (m.user.presence.status === "online" || m.user.presence.status === "idle" || m.user.presence.status === "dnd")).size}`);
+        totalUsersChannel.setName(`Total Users : ${member.guild.members.cache.filter(m => !m.user.bot).size}`);
+    
+    }
+}
