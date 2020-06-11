@@ -1,0 +1,15 @@
+{
+    "initialized": [
+        {
+            "guildName": "Cthulhu Test Server",
+            "guildId": "532525442201026580",
+            "verifyChannel": false,
+            "serverStats": false,
+            "serverStatsChannels": {
+                "botCountChannelId": "",
+                "onlineUsersChannelId": "",
+                "totalUsersChannelId": ""
+            }
+        }
+    ]
+}
