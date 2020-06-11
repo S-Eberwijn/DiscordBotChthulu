@@ -7,24 +7,18 @@ const fs = require("fs");
 const bot = new discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 bot.commands = new discord.Collection();
 
-const serverStats = {
-    guildID: '532525442201026580',
-    totalUserID: '710048319820267570',
-    onlineUserID: '710048608409354331',
-    botCountID: '710048438032662551'
-}
 
-// Server variable
+
+// Server variables
 var guild;
 
 // Channel variables
 var generalChannel;
-var verifyChannel;
-
 // Role variables
 var newcomerRole;
 var verifiedRole;
 
+//Read and log command files
 fs.readdir("./commands/", (err, files) => {
     if (err) console.log(err);
     var jsFiles = files.filter(f => f.split(".").pop() === "js");
@@ -42,8 +36,6 @@ fs.readdir("./commands/", (err, files) => {
 
 });
 
-// TODO : MAKE A JS FILE FOR INTIOALIZING TEXT CHANNELS
-
 bot.on("ready", async () => {
     //Extra check to see if bot is ready
     console.log(`\n${bot.user.username} is online!\n`)
@@ -54,7 +46,6 @@ bot.on("ready", async () => {
 
     //Initialize text channels
     generalChannel = bot.channels.cache.get('634844140500418570');
-    verifyChannel = bot.channels.cache.get('710220394849632361');
 
     //Initialize roles
     newcomerRole = guild.roles.cache.find(role => role.name === 'Newcomer');
@@ -63,7 +54,9 @@ bot.on("ready", async () => {
     //Initialize databases
     bot.stupidQuestionTracker = require("./jsonDb/stupidQuestionTracker.json");
     bot.ressurection = require("./jsonDb/ressurection.json");
+    bot.initialization = require("./jsonDb/initialization.json");
 
+    //Update resurrection database
     let ressurectionCount = bot.ressurection['resurrections'].count + 1;
     bot.ressurection['resurrections'] = {
         count: ressurectionCount
@@ -71,34 +64,28 @@ bot.on("ready", async () => {
     fs.writeFile("./jsonDb/ressurection.json", JSON.stringify(bot.ressurection, null, 4), err => {
         if (err) throw err;
     });
-    console.log(verifyChannel);
+
 
 });
 
 bot.on("guildMemberAdd", member => {
-    if (member.guild.id !== serverStats.guildID) return;
-
-    //Change channel names
-    bot.channels.cache.get(serverStats.totalUserID).setName(`Total Users :\t ${member.guild.members.cache.filter(m => !m.user.bot).size}`);
-    bot.channels.cache.get(serverStats.botCountID).setName(`Bot Count :\t ${member.guild.members.cache.filter(m => m.user.bot).size}`);
+    if (member.guild.id !== guild.id) return;
+    //updateServerStatChannels();
 
     //When a new person joins the server
     member.roles.add(newcomerRole);
 });
 
 bot.on("guildMemberRemove", member => {
-    //Change channel names
-    bot.channels.cache.get(serverStats.totalUserID).setName(`Total Users : ${member.guild.members.cache.filter(m => !m.user.bot).size}`);
-    bot.channels.cache.get(serverStats.botCountID).setName(`Bot Count : ${member.guild.members.cache.filter(m => m.user.bot).size}`);
+    //updateServerStatChannels();
 });
 
 bot.on("presenceUpdate", function (oldMember, newMember) {
-    //Once an user comes online or goes offline, this triggers
-    bot.channels.cache.get(serverStats.onlineUserID).setName(`Online Users : ${newMember.guild.members.cache.filter(m => !m.user.bot && (m.user.presence.status === "online" || m.user.presence.status === "idle" || m.user.presence.status === "dnd")).size}`);
+    //updateServerStatChannels();
 });
 
 bot.on('messageReactionAdd', async (messageReaction, user) => {
-    
+    let verifyChannel = bot.channels.cache.find(c => c.name == "verify" && c.type == "text");
     // When we receive a reaction we check if the reaction is partial or not
     if (messageReaction.partial) {
         // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
@@ -113,23 +100,34 @@ bot.on('messageReactionAdd', async (messageReaction, user) => {
     if (user.bot) return;
     const { message, emoji } = messageReaction;
 
-    if (emoji.name === '✅' && message.channel.id === verifyChannel.id && message.id === '710220491088199771') {
-        messageReaction.message.guild.members.cache.get(user.id).roles.add(verifiedRole);
-        messageReaction.message.guild.members.cache.get(user.id).roles.remove(newcomerRole);
-        message.reactions.cache.first().remove(messageReaction.message.guild.members.cache.get(user.id));
+    if (verifyChannel) {
+        if (message.channel.id === verifyChannel.id) {
 
-        generalChannel.send(`Welcome to the server ${messageReaction.message.guild.members.cache.get(user.id)}!`);
+            if (emoji.name === '✅') {
+                messageReaction.message.guild.members.cache.get(user.id).roles.add(verifiedRole);
+                messageReaction.message.guild.members.cache.get(user.id).roles.remove(newcomerRole);
+
+                message.reactions.cache.get('✅').remove().catch(error => console.error('Failed to remove reactions: ', error));
+                message.react('✅');
+
+                generalChannel.send(`Welcome to the server ${messageReaction.message.guild.members.cache.get(user.id)}!`);
+            } else {
+                message.reactions.cache.get(emoji.name).remove().catch(error => console.error('Failed to remove reactions: ', error));
+            }
+        }
     }
+
 });
 
 bot.on('messageReactionRemove', (messageReaction, user) => {
     if (user.bot) return;
     const { message, emoji } = messageReaction;
-
     console.log(`${user.username} removed a reaction: ${emoji.name}`);
+    
 });
 
 bot.on("message", async message => {
+
     //Do nothing when bot sends message
     if (message.author.bot) return;
     //Do nothing when message is a direct message 
@@ -145,5 +143,18 @@ bot.on("message", async message => {
         if (commands) commands.run(bot, message, arguments);
     }
 });
+
+// async function updateServerStatChannels() {
+    
+//     //TODO: make it so it can run on multiple servers
+
+//     //Change channel names
+//     if (bot.initialization.initialized[0].serverStatsChannels.botCountChannelId != '' && bot.initialization.initialized[0].serverStatsChannels.totalUsersChannelId != '') {
+        
+//         await bot.channels.cache.get(bot.initialization.initialized[0].serverStatsChannels.botCountChannelId).setName(`Bot Count : ${guild.members.cache.filter(m => m.user.bot).size}`);
+//         //bot.channels.cache.get(bot.initialization.initialized[0].serverStatsChannels.onlineUsersChannelId).setName(`Online Users : ${guild.members.cache.filter(m => !m.user.bot && (m.user.presence.status === "online" || m.user.presence.status === "idle" || m.user.presence.status === "dnd")).size}`);
+//         await bot.channels.cache.get(bot.initialization.initialized[0].serverStatsChannels.totalUsersChannelId).setName(`Total Users : ${guild.members.cache.filter(m => !m.user.bot).size}`);
+//     }
+// }
 
 bot.login(botConfig.token);
