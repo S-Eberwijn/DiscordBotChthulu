@@ -1,9 +1,9 @@
-const discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args) => {
     let botCreation = bot.user.createdAt.toString().split(' ');
 
-    var botEmbed = new discord.MessageEmbed()
+    var botEmbed = new MessageEmbed()
         .setAuthor(`🤖 ${bot.user.username}#${bot.user.discriminator} 🤖`)
         .setDescription(`I am here to serve my masters: \*\*${bot.users.cache.find(user => user.id === '241273372892200963').username}\*\* & \*\*${bot.users.cache.find(user => user.id === '228499662607351809').username}\*\*`)
         .setColor("#29e53f")
@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args) => {
             { name: '\_\_\*\*ACTIVE SERVERS\*\*\_\_', value: `Active in \*\*${bot.guilds.cache.size}\*\* server(s)`, inline: true }
         )
         .addFields(
-            { name: '\_\_\*\*RESURRECTIONS\*\*\_\_', value: `I have been summoned \*\*${bot.ressurection['resurrections'].count}\*\* times`, inline: true },
+            { name: '\_\_\*\*RESURRECTIONS\*\*\_\_', value: `I've been summoned \*\*${bot.ressurection['resurrections'].count}\*\* times`, inline: true },
             { name: '\_\_\*\*TIME ALIVE\*\*\_\_', value: `${calculateUptimeBot(bot)}`, inline: false },
             { name: '\u200B', value: '\u200B', inline: false}
         )

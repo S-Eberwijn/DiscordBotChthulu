@@ -5,6 +5,7 @@ const fs = require("fs");
 module.exports.run = async (bot, message, args) => {
     let inDatabase = false;
     let indexOfFoundUser;
+    let dmRole = message.guild.roles.cache.find(role => role.name === 'Dungeon Master');
 
     for (let i = 0; i < bot.stupidQuestionTracker['users'].length; i++) {
         if (message.mentions.users.first().id === bot.stupidQuestionTracker['users'][i].userId) {
@@ -14,8 +15,7 @@ module.exports.run = async (bot, message, args) => {
     }
 
     // Check if the one who sent the message has the 'Dungeon Master' role
-    if (message.guild.member(message.author).roles.cache.has('711869852817686550')) {
-
+    if (message.guild.member(message.author).roles.cache.has(dmRole.id)) {
         //Only go in if it has a mention in the arg
         if (message.mentions.users.first()) {
             if (inDatabase) {
@@ -48,7 +48,6 @@ module.exports.run = async (bot, message, args) => {
         } else {
             message.channel.send("Use: !stupid <mention user>");
         }
-
     } else {
         message.channel.send("My masters have not told me to listen to you!");
     }

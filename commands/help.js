@@ -1,4 +1,4 @@
-const discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args) => {
 
@@ -6,7 +6,6 @@ module.exports.run = async (bot, message, args) => {
     var prefix = process.env.PREFIX;
 
     bot.commands.forEach(command => {
-
         let constructor = {
             name: command.help.name,
             description: command.help.description,
@@ -14,14 +13,12 @@ module.exports.run = async (bot, message, args) => {
         }
 
         commandList.push(constructor);
-        
     });
 
-    let response = "**Chthulu Commands**\n\n";
-    let general = "**__General__**\n";
-    let information = "\n**__Information__**\n";
-    let dungeonsAndDragons = "\n**__Dungeons & Dragons__**\n";
-    let miscellaneous = "\n**__Miscellaneous__**\n";
+    let general = "";
+    let information = "";
+    let dungeonsAndDragons = "";
+    let miscellaneous = "";
 
     for (let i = 0; i < commandList.length; i++) {
         const command = commandList[i];
@@ -36,15 +33,18 @@ module.exports.run = async (bot, message, args) => {
             miscellaneous += `${prefix}${command["name"]} - ${command["description"]}\n`;
         }
     }
+    const Embed = new MessageEmbed()
+        .setTitle('Chthulu Commands')
+        .addField("**__General__**\n", general)
+        .addField("**__Information__**\n", information)
+        .addField("**__Dungeons & Dragons__\n**", dungeonsAndDragons)
+        .addField("**__Miscellaneous__**\n", miscellaneous);
 
-
-    message.author.send(response + general + information + dungeonsAndDragons + miscellaneous).then(()=>{
+    message.author.send(Embed).then(()=>{
         message.channel.send("You can find the commands in a personal DM! :mailbox_with_mail:");
     }).catch(()=>{
         message.channel.send("Something went wrong, turn on your personal messages");
     });
-
-
 }
 
 module.exports.help = {

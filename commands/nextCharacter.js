@@ -30,7 +30,6 @@ module.exports.run = async (bot, message, args) => {
                     charClass = text[14].split('Class: ')[1];
                     charOrigin = text[15].split('Origin: ')[1];
                 }
-
             });
             outputField = new discord.MessageEmbed()
             //TODO: AUTOMATE NAME
@@ -45,15 +44,10 @@ module.exports.run = async (bot, message, args) => {
                 .addField('\_\_\*\*FAMILY\*\*\_\_', charFamily)
                 .addField('\_\_\*\*LIFESTYLE\*\*\_\_', charLifestyle)
                 .addField('\_\_\*\*ORIGIN\*\*\_\_', charOrigin)
-                .addField('\_\_\*\*MOTIVATION\*\*\_\_', charMotivation)
-                
-                
-            ;
+                .addField('\_\_\*\*MOTIVATION\*\*\_\_', charMotivation);
         }
         message.channel.send(outputField);
     });
-
-
 }
 
 module.exports.help = {
