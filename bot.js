@@ -8,21 +8,28 @@ const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 bot.commands = new Enmap();
 
 // Read and log command files
-fs.readdir("./commands/", async (err, files) => {
+fs.readdir("./commands/", async (err, dirs) => {
     if (err) console.log(err);
-    var jsFiles = files.filter(f => f.split(".").pop() === "js");
-    if (jsFiles.length <= 0) {
-        console.log("Found no .js files!");
+    if (dirs.length <= 0) {
+        console.log("Found no dirs files!");
         return;
     }
-
-    jsFiles.forEach((f, i) => {
-        var fileGet = require(`./commands/${f}`);
-        console.log(`--{ Command ${f} is loaded }--`);
-        var commandName = fileGet.help.name;
-        bot.commands.set(commandName.toLowerCase(), fileGet);
+    dirs.forEach((d, i) => {
+        fs.readdir(`./commands/${d}`, async (err, files) => {
+            if (err) console.log(err);
+            var jsFiles = files.filter(f => f.split(".").pop() === "js");
+            if (dirs.length <= 0) {
+                console.log("Found no dirs files!");
+                return;
+            }
+            jsFiles.forEach((f,i) => {
+                var fileGet = require(`./commands/${d}/${f}`);
+                console.log(`--{ Command ${f} is loaded }--`);
+                var commandName = fileGet.help.name;
+                bot.commands.set(commandName.toLowerCase(), fileGet);
+            });
+        });
     });
-    console.log('\n');
 });
 
 // Read and log event files
@@ -35,7 +42,6 @@ fs.readdir('./events/', (err, files) => {
         console.log(`--{ Event ${evtName} is loaded }--`);
         bot.on(evtName, evt.bind(null, bot));
     });
-    console.log('\n');
 });
 
 bot.login(token);
