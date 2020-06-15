@@ -139,7 +139,6 @@ module.exports.run = async (bot, message, args) => {
                         if (bot.initialization.initialized[k].guildId == guild.id) {
                             bot.initialization.initialized[k].serverStatsChannels.onlineUsersChannelId = channel.id;
 
-
                             obj = bot.initialization;
                             obj.initialized.push();
                             let json = JSON.stringify(obj, null, 4);

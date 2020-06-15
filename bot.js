@@ -1,7 +1,7 @@
 const { Client } = require('discord.js');
 const fs = require("fs");
 const Enmap = require('enmap');
-const { token } = require('./config')
+const { token } = require('./config');
 
 // Initialize Discord Bot
 const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
