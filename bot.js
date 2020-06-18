@@ -6,7 +6,7 @@ const { token } = require('./config');
 // Initialize Discord Bot
 const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 bot.commands = new Enmap();
-
+ 
 // Read and log command files
 fs.readdir("./commands/", async (err, dirs) => {
     if (err) console.log(err);

@@ -17,6 +17,9 @@
     "request": "^2.88.2",
     "winston": "^3.2.1"
   },
+  "nodemonConfig": {
+    "ignore": ["jsonDb/*.json"]
+  },
   "devDependencies": {
     "eslint": "^7.2.0"
   },

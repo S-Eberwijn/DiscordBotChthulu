@@ -1,3 +1,410 @@
 {
-    "totalSessions": 30
+    "requestedSessions": [
+        {
+            "sessionId": 7,
+            "sessionCommander": {
+                "id": "241273372892200963",
+                "bot": false,
+                "username": "๖̶̶̶ζ͜͡Khthonios",
+                "discriminator": "4384",
+                "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                "lastMessageChannelID": "722149799322845204",
+                "flags": 0,
+                "createdTimestamp": 1477594454740,
+                "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+            },
+            "party": [
+                {
+                    "id": "241273372892200963",
+                    "bot": false,
+                    "username": "๖̶̶̶ζ͜͡Khthonios",
+                    "discriminator": "4384",
+                    "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                    "lastMessageChannelID": "722149799322845204",
+                    "flags": 0,
+                    "createdTimestamp": 1477594454740,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                    "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                    "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                    "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+                },
+                {
+                    "id": "712588051792134166",
+                    "bot": false,
+                    "username": "Test-Cthulhu",
+                    "discriminator": "3728",
+                    "avatar": null,
+                    "lastMessageChannelID": null,
+                    "flags": 0,
+                    "createdTimestamp": 1589964630793,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png",
+                    "tag": "Test-Cthulhu#3728",
+                    "avatarURL": null,
+                    "displayAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png"
+                }
+            ],
+            "time": "2020-06-17T11:00:00.000Z",
+            "location": "Roll20 (online)",
+            "objective": "Find orc encampment"
+        },
+        {
+            "sessionId": 8,
+            "sessionCommander": {
+                "id": "241273372892200963",
+                "bot": false,
+                "username": "๖̶̶̶ζ͜͡Khthonios",
+                "discriminator": "4384",
+                "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                "lastMessageChannelID": "722149799322845204",
+                "flags": 0,
+                "createdTimestamp": 1477594454740,
+                "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+            },
+            "party": [
+                {
+                    "id": "241273372892200963",
+                    "bot": false,
+                    "username": "๖̶̶̶ζ͜͡Khthonios",
+                    "discriminator": "4384",
+                    "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                    "lastMessageChannelID": "722149799322845204",
+                    "flags": 0,
+                    "createdTimestamp": 1477594454740,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                    "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                    "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                    "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+                },
+                {
+                    "id": "712588051792134166",
+                    "bot": false,
+                    "username": "Test-Cthulhu",
+                    "discriminator": "3728",
+                    "avatar": null,
+                    "lastMessageChannelID": null,
+                    "flags": 0,
+                    "createdTimestamp": 1589964630793,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png",
+                    "tag": "Test-Cthulhu#3728",
+                    "avatarURL": null,
+                    "displayAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png"
+                }
+            ],
+            "time": "2020-06-17T11:00:00.000Z",
+            "location": "Roll20 (online)",
+            "objective": "Find orc encampment"
+        }
+    ],
+    "plannedSessions": [
+        {
+            "sessionId": 6,
+            "sessionCommander": {
+                "id": "241273372892200963",
+                "bot": false,
+                "username": "๖̶̶̶ζ͜͡Khthonios",
+                "discriminator": "4384",
+                "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                "lastMessageChannelID": "722149799322845204",
+                "flags": 0,
+                "createdTimestamp": 1477594454740,
+                "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+            },
+            "party": [
+                {
+                    "id": "241273372892200963",
+                    "bot": false,
+                    "username": "๖̶̶̶ζ͜͡Khthonios",
+                    "discriminator": "4384",
+                    "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                    "lastMessageChannelID": "722149799322845204",
+                    "flags": 0,
+                    "createdTimestamp": 1477594454740,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                    "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                    "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                    "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+                },
+                {
+                    "id": "712588051792134166",
+                    "bot": false,
+                    "username": "Test-Cthulhu",
+                    "discriminator": "3728",
+                    "avatar": null,
+                    "lastMessageChannelID": null,
+                    "flags": 0,
+                    "createdTimestamp": 1589964630793,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png",
+                    "tag": "Test-Cthulhu#3728",
+                    "avatarURL": null,
+                    "displayAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png"
+                }
+            ],
+            "time": "2020-06-17T11:00:00.000Z",
+            "location": "Roll20 (online)",
+            "objective": "Find orc encampment"
+        },
+        {
+            "sessionId": 4,
+            "sessionCommander": {
+                "id": "241273372892200963",
+                "bot": false,
+                "username": "๖̶̶̶ζ͜͡Khthonios",
+                "discriminator": "4384",
+                "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                "lastMessageChannelID": "722149799322845204",
+                "flags": 0,
+                "createdTimestamp": 1477594454740,
+                "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+            },
+            "party": [
+                {
+                    "id": "241273372892200963",
+                    "bot": false,
+                    "username": "๖̶̶̶ζ͜͡Khthonios",
+                    "discriminator": "4384",
+                    "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                    "lastMessageChannelID": "722149799322845204",
+                    "flags": 0,
+                    "createdTimestamp": 1477594454740,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                    "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                    "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                    "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+                },
+                {
+                    "id": "712588051792134166",
+                    "bot": false,
+                    "username": "Test-Cthulhu",
+                    "discriminator": "3728",
+                    "avatar": null,
+                    "lastMessageChannelID": null,
+                    "flags": 0,
+                    "createdTimestamp": 1589964630793,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png",
+                    "tag": "Test-Cthulhu#3728",
+                    "avatarURL": null,
+                    "displayAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png"
+                }
+            ],
+            "time": "2020-06-17T11:00:00.000Z",
+            "location": "Roll20 (online)",
+            "objective": "Find orc encampment"
+        },
+        {
+            "sessionId": 5,
+            "sessionCommander": {
+                "id": "241273372892200963",
+                "bot": false,
+                "username": "๖̶̶̶ζ͜͡Khthonios",
+                "discriminator": "4384",
+                "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                "lastMessageChannelID": "722149799322845204",
+                "flags": 0,
+                "createdTimestamp": 1477594454740,
+                "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+            },
+            "party": [
+                {
+                    "id": "241273372892200963",
+                    "bot": false,
+                    "username": "๖̶̶̶ζ͜͡Khthonios",
+                    "discriminator": "4384",
+                    "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                    "lastMessageChannelID": "722149799322845204",
+                    "flags": 0,
+                    "createdTimestamp": 1477594454740,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                    "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                    "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                    "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+                },
+                {
+                    "id": "712588051792134166",
+                    "bot": false,
+                    "username": "Test-Cthulhu",
+                    "discriminator": "3728",
+                    "avatar": null,
+                    "lastMessageChannelID": null,
+                    "flags": 0,
+                    "createdTimestamp": 1589964630793,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png",
+                    "tag": "Test-Cthulhu#3728",
+                    "avatarURL": null,
+                    "displayAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png"
+                }
+            ],
+            "time": "2020-06-17T11:00:00.000Z",
+            "location": "Roll20 (online)",
+            "objective": "Find orc encampment"
+        }
+    ],
+    "pastSessions": [
+        {
+            "sessionId": 1,
+            "sessionCommander": {
+                "id": "241273372892200963",
+                "bot": false,
+                "username": "๖̶̶̶ζ͜͡Khthonios",
+                "discriminator": "4384",
+                "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                "lastMessageChannelID": "722149799322845204",
+                "flags": 0,
+                "createdTimestamp": 1477594454740,
+                "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+            },
+            "party": [
+                {
+                    "id": "241273372892200963",
+                    "bot": false,
+                    "username": "๖̶̶̶ζ͜͡Khthonios",
+                    "discriminator": "4384",
+                    "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                    "lastMessageChannelID": "722149799322845204",
+                    "flags": 0,
+                    "createdTimestamp": 1477594454740,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                    "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                    "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                    "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+                },
+                {
+                    "id": "712588051792134166",
+                    "bot": false,
+                    "username": "Test-Cthulhu",
+                    "discriminator": "3728",
+                    "avatar": null,
+                    "lastMessageChannelID": null,
+                    "flags": 0,
+                    "createdTimestamp": 1589964630793,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png",
+                    "tag": "Test-Cthulhu#3728",
+                    "avatarURL": null,
+                    "displayAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png"
+                }
+            ],
+            "time": "2020-06-17T11:00:00.000Z",
+            "location": "Roll20 (online)",
+            "objective": "Find orc encampment"
+        },
+        {
+            "sessionId": 3,
+            "sessionCommander": {
+                "id": "241273372892200963",
+                "bot": false,
+                "username": "๖̶̶̶ζ͜͡Khthonios",
+                "discriminator": "4384",
+                "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                "lastMessageChannelID": "722149799322845204",
+                "flags": 0,
+                "createdTimestamp": 1477594454740,
+                "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+            },
+            "party": [
+                {
+                    "id": "241273372892200963",
+                    "bot": false,
+                    "username": "๖̶̶̶ζ͜͡Khthonios",
+                    "discriminator": "4384",
+                    "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                    "lastMessageChannelID": "722149799322845204",
+                    "flags": 0,
+                    "createdTimestamp": 1477594454740,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                    "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                    "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                    "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+                },
+                {
+                    "id": "712588051792134166",
+                    "bot": false,
+                    "username": "Test-Cthulhu",
+                    "discriminator": "3728",
+                    "avatar": null,
+                    "lastMessageChannelID": null,
+                    "flags": 0,
+                    "createdTimestamp": 1589964630793,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png",
+                    "tag": "Test-Cthulhu#3728",
+                    "avatarURL": null,
+                    "displayAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png"
+                }
+            ],
+            "time": "2020-06-17T11:00:00.000Z",
+            "location": "Roll20 (online)",
+            "objective": "Find orc encampment"
+        },
+        {
+            "sessionId": 2,
+            "sessionCommander": {
+                "id": "241273372892200963",
+                "bot": false,
+                "username": "๖̶̶̶ζ͜͡Khthonios",
+                "discriminator": "4384",
+                "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                "lastMessageChannelID": "722149799322845204",
+                "flags": 0,
+                "createdTimestamp": 1477594454740,
+                "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+            },
+            "party": [
+                {
+                    "id": "241273372892200963",
+                    "bot": false,
+                    "username": "๖̶̶̶ζ͜͡Khthonios",
+                    "discriminator": "4384",
+                    "avatar": "00bc719f3812dd0e17d14734c2725d93",
+                    "lastMessageChannelID": "722149799322845204",
+                    "flags": 0,
+                    "createdTimestamp": 1477594454740,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/4.png",
+                    "tag": "๖̶̶̶ζ͜͡Khthonios#4384",
+                    "avatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp",
+                    "displayAvatarURL": "https://cdn.discordapp.com/avatars/241273372892200963/00bc719f3812dd0e17d14734c2725d93.webp"
+                },
+                {
+                    "id": "712588051792134166",
+                    "bot": false,
+                    "username": "Test-Cthulhu",
+                    "discriminator": "3728",
+                    "avatar": null,
+                    "lastMessageChannelID": null,
+                    "flags": 0,
+                    "createdTimestamp": 1589964630793,
+                    "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png",
+                    "tag": "Test-Cthulhu#3728",
+                    "avatarURL": null,
+                    "displayAvatarURL": "https://cdn.discordapp.com/embed/avatars/3.png"
+                }
+            ],
+            "time": "2020-06-17T11:00:00.000Z",
+            "location": "Roll20 (online)",
+            "objective": "Find orc encampment"
+        }
+    ],
+    "nextSessionId": 9,
+    "totalSessions": 37
 }
