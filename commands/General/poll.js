@@ -15,8 +15,8 @@ module.exports.run = async (bot, message, args) => {
 
     message.delete().then(async () => {
         await message.channel.send(Embed).then(async message=>{
-            await message.react('👎');
             await message.react('👍');
+            await message.react('👎');
         });
     });
 }

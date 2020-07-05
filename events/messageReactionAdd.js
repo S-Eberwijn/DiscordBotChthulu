@@ -75,7 +75,10 @@ module.exports = async (bot, messageReaction, user) => {
                 editedEmbed.fields[2].value = `<@${user.id}>`;
 
                 // send the message to a new channel
-                plannedSessionsChannel.send(editedEmbed);
+                plannedSessionsChannel.send(editedEmbed).then(async message => {
+                    await message.react('🟢');
+                    await message.react('🔴');
+                });
                 message.delete();
 
             } else {
@@ -87,29 +90,36 @@ module.exports = async (bot, messageReaction, user) => {
     if (plannedSessionsChannel) {
         if (message.channel.id === plannedSessionsChannel.id) {
             if (message.guild.member(user).roles.cache.has(dmRole.id)) {
-                const editedEmbed = new MessageEmbed(message.embeds[0]);
-
-                // could for instance be "PLAYED" or "CANCELED"
-                let status = "PLAYED";
-                editedEmbed.title = `${editedEmbed.title}[${status}]`;
-
-                for (let i = 0; i < bot.sessions.plannedSessions.length; i++) {
-                    if (bot.sessions.plannedSessions[i].sessionId === hexToDec(editedEmbed.hexColor)) {
-                        // update pastSessions
-                        bot.sessions.pastSessions[bot.sessions.pastSessions.length] = bot.sessions.plannedSessions[i];
-
-                        // remove from plannedSessions
-                        bot.sessions.plannedSessions.splice(i, 1);
-                        break;
+                if (emoji.name === '🟢' || emoji.name === '🔴') {
+                    let status = "PLAYED";
+                    if (emoji.name === '🟢') {
+                        status = "PLAYED";
+                    } else if (emoji.name === '🔴') {
+                        status = "CANCELED";
                     }
+                    const editedEmbed = new MessageEmbed(message.embeds[0]);
+
+                    // could for instance be "PLAYED" or "CANCELED"
+
+                    editedEmbed.title = `${editedEmbed.title}[${status}]`;
+
+                    for (let i = 0; i < bot.sessions.plannedSessions.length; i++) {
+                        if (bot.sessions.plannedSessions[i].sessionId === hexToDec(editedEmbed.hexColor)) {
+                            // update pastSessions
+                            bot.sessions.pastSessions[bot.sessions.pastSessions.length] = bot.sessions.plannedSessions[i];
+
+                            // remove from plannedSessions
+                            bot.sessions.plannedSessions.splice(i, 1);
+                            break;
+                        }
+                    }
+
+                    // update the json database
+                    writeToJsonDb("sessions", bot.sessions);
+
+                    message.delete()
+                    pastSessionsChannel.send(editedEmbed);
                 }
-
-                // update the json database
-                writeToJsonDb("sessions", bot.sessions);
-
-                message.delete()
-                pastSessionsChannel.send(editedEmbed);
-
             }
         }
     }

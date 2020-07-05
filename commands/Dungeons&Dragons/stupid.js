@@ -1,4 +1,3 @@
-const discord = require('discord.js');
 const fs = require("fs");
 
 
@@ -28,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
                 fs.writeFile("./jsonDb/stupidQuestionTracker.json", JSON.stringify(bot.stupidQuestionTracker, null, 4), err => {
                     if (err) throw err;
                 });
-                if(stupidQuestionTrackerCount%3 === 0){
+                if (stupidQuestionTrackerCount % 3 === 0) {
                     // Add a mute role!
                     console.log("Do something!");
                 }

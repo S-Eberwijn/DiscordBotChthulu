@@ -15,27 +15,34 @@ module.exports.run = async (bot, message, args) => {
     let objective = getSessionRequestObjective(args);
 
     // Check if the one who sent the message has the 'Dungeon Master' role
-    if (message.guild.member(message.author).roles.cache.has(dmRole.id)) {
-        let outputEmbed = createSessionRequestEmbed(partyMembers, displayDate, objective, message, bot);
-
-        message.delete();
-        message.channel.send(outputEmbed);
-
-        // Save to database (json for now)
-        bot.sessions['requestedSessions'][bot.sessions['requestedSessions'].length] = {
-            sessionId: bot.sessions.nextSessionId,
-            sessionCommander: partyMembers[0],
-            party: partyMembers,
-            dungeonMaster: undefined,
-            time: displayDate,
-            location: "Roll20 (online)",
-            objective: objective.trim()
-        };
-        bot.sessions.nextSessionId += 1;
-
-        writeToJsonDb("sessions", bot.sessions);
+    if(dmRole){
+        if (message.guild.member(message.author).roles.cache.has(dmRole.id)) {
+            let outputEmbed = createSessionRequestEmbed(partyMembers, displayDate, objective, message, bot);
+    
+            message.delete();
+            message.channel.send(outputEmbed).then(async message => {
+                await message.react('✔️');
+                await message.react('✖️');
+            });
+    
+            // Save to database (json for now)
+            bot.sessions['requestedSessions'][bot.sessions['requestedSessions'].length] = {
+                sessionId: bot.sessions.nextSessionId,
+                sessionCommander: partyMembers[0],
+                party: partyMembers,
+                dungeonMaster: undefined,
+                time: displayDate,
+                location: "Roll20 (online)",
+                objective: objective.trim()
+            };
+            bot.sessions.nextSessionId += 1;
+    
+            writeToJsonDb("sessions", bot.sessions);
+        } else {
+            message.channel.send("My masters have told me not to listen to you!");
+        }
     } else {
-        message.channel.send("My masters have told me not to listen to you!");
+        message.channel.send("Did not fine a \"Dungeon Master\" role")
     }
 }
 

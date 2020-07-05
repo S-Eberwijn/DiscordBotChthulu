@@ -1,4 +1,4 @@
-const discord = require('discord.js');
+const { token } = require("../../config")
 
 module.exports.run = async (bot, message, args) => {
 

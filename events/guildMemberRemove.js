@@ -1,7 +1,8 @@
+const {updateServerStatChannels} = require('../otherFunctions/updateServerStatChannel.js');
+
 module.exports = async (bot, member) => {
     // Update Server Stats channels
-    let update = require('../otherFunctions/updateServerStatChannel.js');
-    update.updateServerStatChannels(bot, newMember);
+    //updateServerStatChannels(bot, member);
 
     console.log(`${member.user.tag} left **${member.guild.name}**`);
 }

@@ -1,8 +1,12 @@
 {
     "users": [
-    
+        {
+            "username": "๖̶̶̶ζ͜͡Khthonios",
+            "userId": "241273372892200963",
+            "count": 1
+        }
     ],
     "totalUsers": {
-        "xUsers": 0
+        "xUsers": 1
     }
 }

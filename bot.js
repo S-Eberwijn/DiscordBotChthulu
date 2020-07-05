@@ -6,6 +6,7 @@ const { token } = require('./config');
 // Initialize Discord Bot
 const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 bot.commands = new Enmap();
+
  
 // Read and log command files
 fs.readdir("./commands/", async (err, dirs) => {
@@ -20,7 +21,7 @@ fs.readdir("./commands/", async (err, dirs) => {
             var jsFiles = files.filter(f => f.split(".").pop() === "js");
             if (dirs.length <= 0) {
                 console.log("Found no dirs files!");
-                return;
+                return; 
             }
             jsFiles.forEach((f,i) => {
                 var fileGet = require(`./commands/${d}/${f}`);

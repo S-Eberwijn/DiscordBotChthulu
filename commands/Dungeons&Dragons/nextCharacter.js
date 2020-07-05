@@ -1,16 +1,28 @@
-const discord = require('discord.js');
+const {MessageEmbed} = require('discord.js');
 const request = require('request');
 const cheerio = require('cheerio');
 
 let url = "https://www.kassoon.com/dnd/backstory-generator/";
-let badges = [];
+let nameURL = "https://www.behindthename.com/random/random.php?number=2&sets=1&gender=both&surname=&all=yes";
 
 let outputField;
-let charRace, charBirthplace, charClass, charParents, charFamily, charLifestyle;
-let charChildhood, charBackground, charMotivation, charOrigin, charAge;
+let charName, charRace, charClass, charFamily, charLifestyle;
+let charChildhood, charBackground, charMotivation, charOrigin;
 
 
 module.exports.run = async (bot, message, args) => {
+    request(nameURL, function (err, resp, body) {
+        if (!err && resp.statusCode == 200) {
+            let $ = cheerio.load(body);
+
+            $('center').each(function (index, element) {
+                if ($(element).text()) {
+                    text = $(element).text().replace(/(\r\n|\n|\r)/gm, '\n').split('\n');
+                    charName = text[3].trim();
+                } 
+            });
+        }
+    });
     request(url, function (err, resp, body) {
         if (!err && resp.statusCode == 200) {
             let $ = cheerio.load(body);
@@ -19,9 +31,6 @@ module.exports.run = async (bot, message, args) => {
                 if ($(element).text()) {
                     text = $(element).text().replace(/(\r\n|\n|\r)/gm, '\n').slice(362).split('\n');
                     charRace = text[0].split('Race: ')[1];
-                    //charBirthplace = text[1].split('Birthplace: ')[1];
-                    charAge = text[2].split('Current Age: ')[1];
-                    //charParents = text[5].split('Parents: ')[1];
                     charFamily = text[6].split('Family: ')[1];
                     charLifestyle = text[7].split('Lifestyle: ')[1];
                     charChildhood = text[8].split('Childhood: ')[1];
@@ -31,21 +40,26 @@ module.exports.run = async (bot, message, args) => {
                     charOrigin = text[15].split('Origin: ')[1];
                 }
             });
-            outputField = new discord.MessageEmbed()
-            //TODO: AUTOMATE NAME
-                .setDescription("A new character idea!")
-            //TODO: AUTOMATE CLASS ICON
-                .setThumbnail('https://cdn.discordapp.com/attachments/711689970456461372/720323454431133716/Class_Icon_-_Artificer.png')
-                .addFields(
-                    { name: '\_\_\*\*RACE\*\*\_\_', value: `${charRace}`, inline: true },
-                    { name: '\_\_\*\*CLASS\*\*\_\_', value: `${charClass}`, inline: true },
-                    { name: '\_\_\*\*BACKGROUND\*\*\_\_', value: `${charBackground}`, inline: true }
-                )
-                .addField('\_\_\*\*FAMILY\*\*\_\_', charFamily)
-                .addField('\_\_\*\*LIFESTYLE\*\*\_\_', charLifestyle)
-                .addField('\_\_\*\*ORIGIN\*\*\_\_', charOrigin)
-                .addField('\_\_\*\*MOTIVATION\*\*\_\_', charMotivation);
         }
+        if (charName === undefined){
+            charName = "John Doe";
+        }
+        outputField = new MessageEmbed()
+            //TODO: AUTOMATE NAME BY RACE
+            //TODO: DECLARE MALE OR FEMALE
+            .setTitle(`${charName}`)
+            .attachFiles([`./images/DnD/ClassIcons/${charClass.trim()}.png`])
+            .setThumbnail(`attachment://${charClass.trim()}.png`)
+            .addFields(
+                { name: '\_\_\*\*RACE\*\*\_\_', value: `${charRace}`, inline: true },
+                { name: '\_\_\*\*CLASS\*\*\_\_', value: `${charClass}`, inline: true },
+                { name: '\_\_\*\*BACKGROUND\*\*\_\_', value: `${charBackground}`, inline: true }
+            )
+            .addField('\_\_\*\*FAMILY\*\*\_\_', charFamily)
+            .addField('\_\_\*\*LIFESTYLE\*\*\_\_', charLifestyle)
+            .addField('\_\_\*\*ORIGIN\*\*\_\_', charOrigin)
+            .addField('\_\_\*\*MOTIVATION\*\*\_\_', charMotivation)
+            .setColor("#A9A9A9");
         message.channel.send(outputField);
     });
 }
@@ -55,7 +69,6 @@ module.exports.help = {
     description: "Gives you a next character to build",
     category: "Dungeons & Dragons"
 }
-
 
 
 
