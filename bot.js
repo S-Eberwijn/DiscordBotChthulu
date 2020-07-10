@@ -1,7 +1,8 @@
+require('dotenv').config();
 const { Client } = require('discord.js');
 const fs = require("fs");
 const Enmap = require('enmap');
-const { token } = require('./config');
+
 
 // Initialize Discord Bot
 const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
@@ -44,5 +45,4 @@ fs.readdir('./events/', (err, files) => {
         bot.on(evtName, evt.bind(null, bot));
     });
 });
-
-bot.login(token);
+bot.login(`${process.env.TOKEN}`);

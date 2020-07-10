@@ -1,5 +1,3 @@
-const { token } = require("../../config")
-
 module.exports.run = async (bot, message, args) => {
 
     message.channel.send('Resetting...')

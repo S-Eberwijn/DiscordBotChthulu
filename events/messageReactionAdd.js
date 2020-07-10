@@ -1,7 +1,10 @@
 const { MessageEmbed } = require('discord.js');
 let fs = require('fs');
 let { writeToJsonDb } = require('../otherFunctions/writeToJsonDb.js');
-const { hexToDec } = require("../otherFunctions/numberFunctions");
+const { hexToDec } = require('../otherFunctions/numberFunctions');
+const SessionRequest = require('../database/models/SessionRequest');
+const PlannedSession = require('../database/models/PlannedSession');
+
 
 
 
@@ -9,6 +12,7 @@ module.exports = async (bot, messageReaction, user) => {
 
     let verifyChannel = bot.channels.cache.find(c => c.name == "verify" && c.type == "text");
     let generalChannel = bot.channels.cache.find(c => c.name == "general" && c.type == "text");
+    let roleSelectionChannel = bot.channels.cache.find(c => c.name == "role-selection" && c.type == "text");
     let sessionRequestChannel = bot.channels.cache.find(c => c.name == "session-request" && c.type == "text");
     let plannedSessionsChannel = bot.channels.cache.find(c => c.name == "planned-sessions" && c.type == "text");
     let pastSessionsChannel = bot.channels.cache.find(c => c.name == "past-sessions" && c.type == "text");
@@ -16,6 +20,8 @@ module.exports = async (bot, messageReaction, user) => {
     let verifiedRole = messageReaction.message.guild.roles.cache.find(role => role.name === 'Verified');
     let newcomerRole = messageReaction.message.guild.roles.cache.find(role => role.name === 'Newcomer');
     let dmRole = messageReaction.message.guild.roles.cache.find(role => role.name === 'Dungeon Master');
+    //let dungeonsAndDragonsRole = messageReaction.message.guild.roles.cache.find(role => role.name === 'Dungeons & Dragons');
+
 
     // When we receive a reaction we check if the reaction is partial or not
     if (messageReaction.partial) {
@@ -50,6 +56,7 @@ module.exports = async (bot, messageReaction, user) => {
     if (sessionRequestChannel) {
         if (message.channel.id === sessionRequestChannel.id) {
             if (message.guild.member(user).roles.cache.has(dmRole.id)) {
+
                 const editedEmbed = new MessageEmbed(message.embeds[0]).setTitle(`**Session_${bot.sessions.totalSessions + 1}: **`);
 
                 // find the right session
@@ -65,6 +72,8 @@ module.exports = async (bot, messageReaction, user) => {
                     }
                 }
 
+                let foundSessionRequest = await SessionRequest.findOne({where: {request_message_id: message.id}});
+                
                 // update totalSessions 
                 bot.sessions.totalSessions += 1;
 
@@ -78,6 +87,17 @@ module.exports = async (bot, messageReaction, user) => {
                 plannedSessionsChannel.send(editedEmbed).then(async message => {
                     await message.react('🟢');
                     await message.react('🔴');
+
+                    PlannedSession.create({
+                        session_id: message.id,
+                        session_commander_id: foundSessionRequest.get('session_commander_id'),
+                        session_party: foundSessionRequest.get('session_party'),
+                        date: foundSessionRequest.get('date'),
+                        objective: foundSessionRequest.get('objective'),
+                        session_number: 44,
+                        dungeon_master_id: user.id,
+                        session_status: 'NOT PLAYED'
+                    });
                 });
                 message.delete();
 
@@ -90,36 +110,25 @@ module.exports = async (bot, messageReaction, user) => {
     if (plannedSessionsChannel) {
         if (message.channel.id === plannedSessionsChannel.id) {
             if (message.guild.member(user).roles.cache.has(dmRole.id)) {
-                if (emoji.name === '🟢' || emoji.name === '🔴') {
-                    let status = "PLAYED";
-                    if (emoji.name === '🟢') {
-                        status = "PLAYED";
-                    } else if (emoji.name === '🔴') {
-                        status = "CANCELED";
-                    }
-                    const editedEmbed = new MessageEmbed(message.embeds[0]);
 
-                    // could for instance be "PLAYED" or "CANCELED"
-
-                    editedEmbed.title = `${editedEmbed.title}[${status}]`;
-
-                    for (let i = 0; i < bot.sessions.plannedSessions.length; i++) {
-                        if (bot.sessions.plannedSessions[i].sessionId === hexToDec(editedEmbed.hexColor)) {
-                            // update pastSessions
-                            bot.sessions.pastSessions[bot.sessions.pastSessions.length] = bot.sessions.plannedSessions[i];
-
-                            // remove from plannedSessions
-                            bot.sessions.plannedSessions.splice(i, 1);
-                            break;
-                        }
-                    }
-
-                    // update the json database
-                    writeToJsonDb("sessions", bot.sessions);
-
-                    message.delete()
-                    pastSessionsChannel.send(editedEmbed);
-                }
+            }
+        }
+    }
+    
+    if (roleSelectionChannel) {
+        if (message.channel.id === roleSelectionChannel.id) {
+            switch (emoji.name) {
+                case 'LoL':
+                    messageReaction.message.guild.members.cache.get(user.id).roles.add(messageReaction.message.guild.roles.cache.find(role => role.name === 'League of Legends'));
+                    break;
+                case '🐉':
+                    messageReaction.message.guild.members.cache.get(user.id).roles.add(messageReaction.message.guild.roles.cache.find(role => role.name === 'Dungeons & Dragons'));
+                    break;
+                case 'minecraft':
+                    messageReaction.message.guild.members.cache.get(user.id).roles.add(messageReaction.message.guild.roles.cache.find(role => role.name === 'Minecraft'));
+                    break;
+                default:
+                    break;
             }
         }
     }

@@ -1,8 +1,21 @@
 const fs = require("fs");
+const db = require('../database/database.js');
+const { initializeDB } = require('../database/initializeDB');
+
+
 
 module.exports = async bot => {
     // Check to see if bot is ready
     console.log(`\n${bot.user.username} is online!\n`);
+
+    db.authenticate().then(async () => {
+        console.log("Logged in to DB.");
+
+        initializeDB(db);
+        
+    }).catch(err => console.log(err));
+
+
     // let date = new Date(new Date().getTime() + (0*24*60*60*1000))
     // console.log(date.getDate());
 

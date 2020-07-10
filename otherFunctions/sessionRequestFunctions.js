@@ -21,6 +21,14 @@ exports.getSessionRequestPartyMembers = function (args, bot) {
     return partyMembers;
 }
 
+exports.getSessionRequestPartyMembersIds = function (partyMembers) {
+    let partyMembersIds = [];
+    partyMembers.forEach(partyMember => {
+        partyMembersIds.push(partyMember.id);
+    });
+    return partyMembersIds;
+}
+
 exports.getSessionRequestObjective = function (args) {
     let objective = '';
     while (args[0]) {
