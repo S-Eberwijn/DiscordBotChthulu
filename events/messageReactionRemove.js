@@ -1,4 +1,7 @@
-module.exports = (bot, messageReaction, user) => {
+const Player = require('../database/models/Player.js');
+
+
+module.exports = async (bot, messageReaction, user) => {
     const { message, emoji } = messageReaction;
     const roleSelectionChannel = bot.channels.cache.find(c => c.name == "role-selection" && c.type == "text");
 
@@ -16,6 +19,10 @@ module.exports = (bot, messageReaction, user) => {
                     break;
                 case '🐉':
                     messageReaction.message.guild.members.cache.get(user.id).roles.remove(messageReaction.message.guild.roles.cache.find(role => role.name === 'Dungeons & Dragons'));
+                    await Player.findOne({where: {player_id: user.id}}).then(player => {
+                        player.destroy();
+                    });
+                    
                     break;
                 case 'minecraft':
                     messageReaction.message.guild.members.cache.get(user.id).roles.remove(messageReaction.message.guild.roles.cache.find(role => role.name === 'Minecraft'));

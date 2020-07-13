@@ -12,6 +12,14 @@ module.exports = class PlayerCharacter extends Model {
                 type: DataTypes.STRING(32),
                 allowNull: false
             },
+            name: {
+                type: DataTypes.STRING(64),
+                allowNull: false
+            },
+            title: {
+                type: DataTypes.STRING(64),
+                allowNull: true
+            },
             description: {
                 type: DataTypes.TEXT,
                 allowNull: true
@@ -24,27 +32,27 @@ module.exports = class PlayerCharacter extends Model {
                 type: DataTypes.STRING(32),
                 allowNull: true
             },
+            age: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
             level: {
                 type: DataTypes.INTEGER,
                 allowNull: true
             },
             next_session_id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING(32),
                 allowNull: true
             },
             last_session_id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING(32),
                 allowNull: true
-            },
-            name: {
-                type: DataTypes.STRING(64),
-                allowNull: false
             },
             picture_url: {
                 type: DataTypes.STRING(255),
                 allowNull: true
             },
-            age: {
+            alive: {
                 type: DataTypes.INTEGER,
                 allowNull: false
             }

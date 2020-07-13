@@ -1,11 +1,9 @@
 const { MessageEmbed } = require('discord.js');
-let fs = require('fs');
-let { writeToJsonDb } = require('../otherFunctions/writeToJsonDb.js');
-const { hexToDec } = require('../otherFunctions/numberFunctions');
 const SessionRequest = require('../database/models/SessionRequest');
 const PlannedSession = require('../database/models/PlannedSession');
-
-
+const PlayerCharacter = require('../database/models/PlayerCharacter.js');
+const Player = require('../database/models/Player.js');
+const GeneralInfo = require('../database/models/GeneralInfo.js');
 
 
 module.exports = async (bot, messageReaction, user) => {
@@ -57,50 +55,46 @@ module.exports = async (bot, messageReaction, user) => {
         if (message.channel.id === sessionRequestChannel.id) {
             if (message.guild.member(user).roles.cache.has(dmRole.id)) {
 
-                const editedEmbed = new MessageEmbed(message.embeds[0]).setTitle(`**Session_${bot.sessions.totalSessions + 1}: **`);
+                const editedEmbed = new MessageEmbed(message.embeds[0]);
 
-                // find the right session
-                for (let i = 0; i < bot.sessions.requestedSessions.length; i++) {
-                    if (bot.sessions.requestedSessions[i].sessionId === hexToDec(editedEmbed.hexColor)) {
-
-                        // update plannedSessions
-                        bot.sessions.plannedSessions[bot.sessions.plannedSessions.length] = bot.sessions.requestedSessions[i];
-
-                        // remove from requestedSessions
-                        bot.sessions.requestedSessions.splice(i, 1);
-                        break;
-                    }
-                }
-
-                let foundSessionRequest = await SessionRequest.findOne({where: {request_message_id: message.id}});
-                
-                // update totalSessions 
-                bot.sessions.totalSessions += 1;
-
-                // write away the new json db
-                writeToJsonDb("sessions", bot.sessions);
+                let foundSessionRequest = await SessionRequest.findOne({ where: { request_message_id: message.id } });
+                let generalInfo = await GeneralInfo.findOne();
 
                 // update embed with the right DM
                 editedEmbed.fields[2].value = `<@${user.id}>`;
+                editedEmbed.setTitle(`**Session_${generalInfo.get('session_number')}: **`);
 
                 // send the message to a new channel
                 plannedSessionsChannel.send(editedEmbed).then(async message => {
                     await message.react('🟢');
                     await message.react('🔴');
 
-                    PlannedSession.create({
-                        session_id: message.id,
-                        session_commander_id: foundSessionRequest.get('session_commander_id'),
-                        session_party: foundSessionRequest.get('session_party'),
-                        date: foundSessionRequest.get('date'),
-                        objective: foundSessionRequest.get('objective'),
-                        session_number: 44,
-                        dungeon_master_id: user.id,
-                        session_status: 'NOT PLAYED'
-                    });
+                    let partyMembers = foundSessionRequest.get('session_party');
+                    for (let i = 0; i < partyMembers.length; i++) {
+                        PlayerCharacter.update(
+                            { next_session_id: message.id },
+                            { where: { player_id: partyMembers[i], alive: 1 } });
+                    }
+                    if (generalInfo) {
+                        PlannedSession.create({
+                            session_id: message.id,
+                            session_commander_id: foundSessionRequest.get('session_commander_id'),
+                            session_party: foundSessionRequest.get('session_party'),
+                            date: foundSessionRequest.get('date'),
+                            objective: foundSessionRequest.get('objective'),
+                            session_number: generalInfo.get('session_number'),
+                            dungeon_master_id: user.id,
+                            session_status: 'NOT PLAYED'
+                        }).then(() => {
+                            generalInfo.session_number += 1;
+                            generalInfo.save();
+                        });
+                    } else {
+                        message.channel.send('Something went wrong; Cannot fine generalInfo table;');
+                    }
                 });
+                foundSessionRequest.destroy();
                 message.delete();
-
             } else {
                 message.reactions.cache.get(emoji.name).remove().catch(error => console.error('Failed to remove reactions: ', error));
             }
@@ -114,7 +108,7 @@ module.exports = async (bot, messageReaction, user) => {
             }
         }
     }
-    
+
     if (roleSelectionChannel) {
         if (message.channel.id === roleSelectionChannel.id) {
             switch (emoji.name) {
@@ -123,6 +117,10 @@ module.exports = async (bot, messageReaction, user) => {
                     break;
                 case '🐉':
                     messageReaction.message.guild.members.cache.get(user.id).roles.add(messageReaction.message.guild.roles.cache.find(role => role.name === 'Dungeons & Dragons'));
+                    await Player.create({
+                        player_id: user.id,
+                        player_name: user.username
+                    });
                     break;
                 case 'minecraft':
                     messageReaction.message.guild.members.cache.get(user.id).roles.add(messageReaction.message.guild.roles.cache.find(role => role.name === 'Minecraft'));
