@@ -11,7 +11,7 @@ let charChildhood, charBackground, charMotivation, charOrigin;
 
 
 module.exports.run = async (bot, message, args) => {
-    request(nameURL, function (err, resp, body) {
+    await request(nameURL, function (err, resp, body) {
         if (!err && resp.statusCode == 200) {
             let $ = cheerio.load(body);
 
@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args) => {
             });
         }
     });
-    request(url, function (err, resp, body) {
+    await request(url, function (err, resp, body) {
         if (!err && resp.statusCode == 200) {
             let $ = cheerio.load(body);
 
@@ -65,7 +65,7 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "nextCharacter",
+    name: "randomCharacter",
     description: "Gives you a next character to build",
     category: "Dungeons & Dragons"
 }

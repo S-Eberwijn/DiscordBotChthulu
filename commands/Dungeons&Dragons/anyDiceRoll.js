@@ -3,6 +3,9 @@ const { MessageEmbed } = require('discord.js');
 module.exports.run = async (bot, message, args) => {
     let sumOfResults = 0;
     let resultPerDie = 0;
+    let includesSum = 0;
+    let sumPosition = 0;
+
     if (args[0]) {
         if (args[0].includes("d")) {
             let numberOfDice = parseInt(args[0].split("d")[0]);
@@ -29,11 +32,28 @@ module.exports.run = async (bot, message, args) => {
                                 outputEmbed.addField('\u200b', '\u200b', true);
                             }
                         }
+                        for (let i = 0; i < args.length; i++) {
+                            if (args[i].includes("+")) {
+                                includesSum = 1;
+                                sumPosition = i;
+                            }
+                        }
 
-                        outputEmbed.setTitle(`Rolling ${numberOfDice}d${typeOfDie}!`);
-                        outputEmbed.addField(`Result`, `${sumOfResults}`, false);
+                        if (includesSum == 1) {
+                            let toBeAddedValue = parseInt(args[sumPosition + 1]);
+                            if (toBeAddedValue) {
+                                if (typeof toBeAddedValue == 'number' && !isNaN(toBeAddedValue)) {
+                                    outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie} + ${toBeAddedValue}!`);
+                                    outputEmbed.addField(`Result`, `[${sumOfResults} + ${toBeAddedValue}] = **${sumOfResults + toBeAddedValue}**`, false);
+                                }
+                            }
+                        } else {
+                            outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie}!`);
+                            outputEmbed.addField(`Result`, `**${sumOfResults}**`, false);
+                        }
                         message.channel.send(outputEmbed).then().catch(console.error);
                     }
+
                 } else {
                     message.channel.send(`The type of die you entered is not correct!`)
                 }

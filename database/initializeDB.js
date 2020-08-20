@@ -1,11 +1,14 @@
 const Player = require('./models/Player');
-const CharacterRequestSession = require('./models/CharacterRequestSession');
-const CharacterSession = require('./models/CharacterSession');
+//const CharacterRequestSession = require('./models/CharacterRequestSession');
+//const CharacterSession = require('./models/CharacterSession');
 const DungeonMaster = require('./models/DungeonMaster');
 const SessionRequest = require('./models/SessionRequest');
 const PlayerCharacter = require('./models/PlayerCharacter');
 const PlannedSession = require('./models/PlannedSession');
 const GeneralInfo = require('./models/GeneralInfo');
+const PastSession = require('./models/PastSession');
+
+
 
 
 
@@ -18,6 +21,7 @@ exports.initializeDB = function (db) {
     PlayerCharacter.init(db);
     PlannedSession.init(db);
     GeneralInfo.init(db);
+    PastSession.init(db);
 
     Player.sync();
     //CharacterSession.sync();    
@@ -27,6 +31,6 @@ exports.initializeDB = function (db) {
     PlayerCharacter.sync();
     PlannedSession.sync();
     GeneralInfo.sync();
-
+    PastSession.sync();
 
 }

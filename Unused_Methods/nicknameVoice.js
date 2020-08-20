@@ -1,6 +1,6 @@
 const fs = require('fs');
 const nameTrackerJson = './jsonDb/nameTracker.json';
-const {writeToJsonDb} = require('../../otherFunctions/writeToJsonDb.js');
+const {writeToJsonDb} = require('../otherFunctions/writeToJsonDb.js');
 
 
 

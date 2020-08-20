@@ -5,11 +5,10 @@ module.exports.run = async (bot, message, args) => {
 
     if (message.member.roles.cache.find(role => role.name === 'Dungeon Master')) {
         const user = message.mentions.users.first();
-        //TO DO: CHECK IF ARGS[1] IS A NUMBER!
         if (user) {
             let character = await PlayerCharacter.findOne({ where: { player_id: user.id } })
             if (character) {
-                if(args[1]){
+                if(args[1] && args.length < 3 && typeof parseInt(args[1]) === 'number'){
                     PlayerCharacter.update(
                         { level: args[1] },
                         { where: { player_id: user.id, alive: 1 }

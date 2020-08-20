@@ -58,8 +58,8 @@ exports.getSessionRequestDateAndTime = function (args) {
     let partyMembersText = createPartyMemberText(partyMembers);
 
     let outputEmbed = new MessageEmbed()
-        .setColor(`#${decimalToHex(bot.sessions.nextSessionId)}`)
         .setThumbnail(message.guild.iconURL())
+        .setColor(0x333333)
         .setTitle(`**Session_Request: **`)
         .addFields(
             { name: `**Session Commander:**`, value: `${partyMembers[0]}\n`, inline: false },

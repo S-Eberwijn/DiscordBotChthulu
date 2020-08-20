@@ -3,7 +3,6 @@ const db = require('../database/database.js');
 const { initializeDB } = require('../database/initializeDB');
 
 
-
 module.exports = async bot => {
     // Check to see if bot is ready
     console.log(`\n${bot.user.username} is online!\n`);
@@ -15,7 +14,6 @@ module.exports = async bot => {
         
     }).catch(err => console.log(err));
 
-
     // let date = new Date(new Date().getTime() + (0*24*60*60*1000))
     // console.log(date.getDate());
 
@@ -25,7 +23,7 @@ module.exports = async bot => {
     bot.stupidQuestionTracker = require("../jsonDb/stupidQuestionTracker.json");
     bot.ressurection = require("../jsonDb/ressurection.json");
     bot.initialization = require("../jsonDb/initialization.json");
-    bot.sessions = require("../jsonDb/sessions.json");
+    
 
     //Update resurrection database
     let ressurectionCount = bot.ressurection['resurrections'].count + 1;

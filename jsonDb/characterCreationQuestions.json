@@ -1,0 +1,22 @@
+[
+	{
+		"question": "What will be your characters name?"
+	},
+	{
+		"question": "What will be your characters race?",
+		"answers": ["26", "twenty-six", "twenty six", "twentysix"]
+    },
+    {
+		"question": "What will be your characters class?",
+		"answers": ["Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard", "Artificer"]
+    },
+    {
+		"question": "What will be your characters age?"
+    },
+    {
+		"question": "What will be your characters short-story?"
+    },
+    {
+		"question": "What will be your characters picture?"
+	}
+]

@@ -3,11 +3,9 @@ const { Client } = require('discord.js');
 const fs = require("fs");
 const Enmap = require('enmap');
 
-
 // Initialize Discord Bot
 const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 bot.commands = new Enmap();
-
  
 // Read and log command files
 fs.readdir("./commands/", async (err, dirs) => {

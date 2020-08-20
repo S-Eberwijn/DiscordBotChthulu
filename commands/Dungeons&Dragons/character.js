@@ -1,15 +1,17 @@
 const { MessageEmbed } = require('discord.js');
 const PlayerCharacter = require('../../database/models/PlayerCharacter');
 
-
 module.exports.run = async (bot, message, args) => {
+    //Returns the character of the message author or the mentioned user
     const user = message.mentions.users.first() || message.author;
-    let character = await PlayerCharacter.findOne({ where: { player_id: user.id } })
-    if (character) {
 
+    //Searches the database for a valid character
+    let character = await PlayerCharacter.findOne({ where: { player_id: user.id, alive: 1 } })
+
+    //If a character is linked to the user, return a character card
+    if (character) {
         let characterTitle = await getCharacterFullName(character);
 
-        console.log(characterTitle);
         const characterEmbed = new MessageEmbed()
             .setColor(0x333333)
             .attachFiles([`./images/DnD/CharacterLevel/${character.get('level')}.png`])
@@ -22,9 +24,9 @@ module.exports.run = async (bot, message, args) => {
                 { name: '\*\*CLASS\*\*', value: `${character.get('class')}`, inline: true },
                 { name: '\*\*AGE\*\*', value: `${character.get('age')}`, inline: true }
             );
-
         message.channel.send(characterEmbed);
     } else {
+        //Could not find a linked character to the user
         message.channel.send('This user does not have a character!');
     }
 
@@ -43,8 +45,9 @@ function hasWhiteSpace(s) {
 }
 
 function getCharacterFullName(character) {
-    let characterTitle = ''
+    let characterTitle = character.get('name');
     if (character.get('title')) {
+        characterTitle = '';
         if (hasWhiteSpace(character.get('name'))) {
             let temporaryNameHolder = character.get('name').split(' ');
             for (let i = 0; i < temporaryNameHolder.length; i++) {

@@ -5,7 +5,7 @@ let guild;
 
 
 module.exports.run = async (bot, message, args) => {
-    bot.initialization = require("../../jsonDb/initialization.json");
+    bot.initialization = require("../jsonDb/initialization.json");
     guild = message.guild;
 
     //Create Verify-Message
