@@ -6,9 +6,7 @@ exports.decimalToHex = function (d, padding) {
     while (hex.length < padding) {
         hex = "0" + hex;
     }
-
     return hex;
-
 }
 
 exports.hexToDec = function (hexString) {

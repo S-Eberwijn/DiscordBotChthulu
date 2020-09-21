@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const request = require('request');
 const cheerio = require('cheerio');
 
@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args) => {
                 if ($(element).text()) {
                     text = $(element).text().replace(/(\r\n|\n|\r)/gm, '\n').split('\n');
                     charName = text[3].trim();
-                } 
+                }
             });
         }
     });
@@ -41,7 +41,7 @@ module.exports.run = async (bot, message, args) => {
                 }
             });
         }
-        if (charName === undefined){
+        if (charName === undefined) {
             charName = "John Doe";
         }
         outputField = new MessageEmbed()
@@ -66,7 +66,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "randomCharacter",
-    description: "Gives you a next character to build",
+    description: "Gives you a random generated character",
     category: "Dungeons & Dragons"
 }
 

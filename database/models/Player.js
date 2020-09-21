@@ -14,11 +14,7 @@ module.exports = class Player extends Model {
             },
             player_name: {
                 type: DataTypes.STRING(32),
-                allowNull: true
-            },
-            latest_character_img: {
-                type: DataTypes.STRING(255),
-                allowNull: true
+                allowNull: false
             }
         }, {
             tableName: 'player',

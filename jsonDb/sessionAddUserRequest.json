@@ -1,0 +1,329 @@
+{
+    "sessions": [
+        {
+            "session_channel_id": "753600665372196965",
+            "requested": [
+                {
+                    "user_id": ""
+                },
+                {
+                    "user_id": "241273372892200963"
+                },
+                {
+                    "user_id": "241273372892200963"
+                }
+            ],
+            "denied": [
+                {
+                    "user_id": "241273372892200963"
+                }
+            ]
+        },
+        {
+            "session_channel_id": "753602268296904766",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": [
+                {
+                    "user_id": "241273372892200963"
+                }
+            ]
+        },
+        {
+            "session_channel_id": "753604818043404358",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": [
+                {
+                    "user_id": "241273372892200963"
+                }
+            ]
+        },
+        {
+            "session_channel_id": "753607252090290285",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753632411149140028",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753634562524840077",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753634622910365806",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753712062072356914",
+            "requested": [
+                {
+                    "user_id": ""
+                },
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753712794091782264",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": [
+                {
+                    "user_id": "134738835362807808"
+                }
+            ]
+        },
+        {
+            "session_channel_id": "753713233033953321",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753714673387438183",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753714804405043264",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753715141983469710",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753715217506107462",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753716085986951189",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753717237331918950",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "753717867538546799",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755102746004291756",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755103567618113737",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755103801396035635",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755128159602737243",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755128275428442343",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755132243600605257",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755132602058276864",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755132858611269702",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755132870468567071",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755133367590060082",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755133375693717514",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755134018198175906",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755134400165052476",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755412279893426257",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "755830311652163595",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757154794266951701",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757155717898567710",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757156900164075540",
+            "requested": [
+                {
+                    "user_id": ""
+                },
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757179023574040586",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757182503743258626",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757187189590327297",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757189331482837062",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757189875866009600",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757190840161534092",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757201170434490418",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757201269088583802",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757202252254675046",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757204664931319919",
+            "requested": [
+                {
+                    "user_id": ""
+                }
+            ],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757205163470749696",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757207925428191325",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757208023058874498",
+            "requested": [],
+            "denied": []
+        },
+        {
+            "session_channel_id": "757208345055592499",
+            "requested": [],
+            "denied": []
+        }
+    ]
+}

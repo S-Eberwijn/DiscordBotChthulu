@@ -1,6 +1,6 @@
 const fs = require('fs');
 const nameTrackerJson = './jsonDb/nameTracker.json';
-const {writeToJsonDb} = require('../otherFunctions/writeToJsonDb.js');
+const { writeToJsonDb } = require('../otherFunctions/writeToJsonDb.js');
 
 
 
@@ -10,10 +10,10 @@ module.exports.run = async (bot, msg, args) => {
     nickJSON = JSON.parse(nickJSON);
     if (!nickJSON.players) {
         nickJSON.players = [];
-        writeToJsonDb("nameTracker",nickJSON);
+        writeToJsonDb("nameTracker", nickJSON);
     }
     switch (args[0]) {
-        
+
         case 'register':
             //argumentvalidation
             if (!args[1]) return msg.reply("**ERROR**: Not enough valid arguments\nCorrect format: !nick <register/delete> <\"Nick\"> <\"Channel Name>\"");
@@ -32,12 +32,12 @@ module.exports.run = async (bot, msg, args) => {
             try {
                 var channelName = msg.content.match(/\".*?\"/g)[1].replace(/\"?\"/g, '');
             }
-            catch (err) {
+            catch (err) { 
                 console.error("Error parsing message for channel");
                 console.error(err);
                 return msg.reply("**ERROR**: Invalid arguments. Remember to put the channel name in quotation marks (\"like this\")");
             }
-            
+
             //validateChannel & search ID
             if (msg.guild.channels.cache.find(channel => channel.name === `${channelName}`)) {
                 var channelID = msg.guild.channels.cache.find(channel => channel.name === `${channelName}`).id;
@@ -86,7 +86,7 @@ module.exports.run = async (bot, msg, args) => {
                     })
                 }
             });
-            writeToJsonDb("nameTracker",nickJSON);
+            writeToJsonDb("nameTracker", nickJSON);
             break;
         case 'delete':
             console.log(msg.content.match((/\".*?\"/g)))
@@ -106,7 +106,7 @@ module.exports.run = async (bot, msg, args) => {
             writeToJsonDb("nameTracker", nickJSON);
             break;
     }
-    
+
 }
 
 module.exports.help = {

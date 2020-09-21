@@ -1,4 +1,13 @@
+const GeneralInfo = require('../database/models/GeneralInfo');
+
+
 module.exports = async (client, guild) => {
-  
-    console.log('I have joined a new server!');
+    await GeneralInfo.create({
+        server_id: guild.id,
+        session_number: 1,
+    }).then(generalInfo => {
+        let channels = [' ']
+        generalInfo.in_character_channels = channels;
+        generalInfo.save();
+    })
 };

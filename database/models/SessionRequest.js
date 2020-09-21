@@ -8,9 +8,13 @@ module.exports = class SessionRequest extends Model {
                 autoIncrement: true,
                 primaryKey: true
             },
-            request_message_id: {
+            message_id: {
                 type: DataTypes.STRING(32),
                 allowNull: false
+            },
+            session_channel_id: {
+                type: DataTypes.STRING(32),
+                allowNull: true
             },
             session_commander_id: {
                 type: DataTypes.STRING(32),

@@ -13,7 +13,7 @@ module.exports = class PlayerCharacter extends Model {
                 allowNull: false
             },
             name: {
-                type: DataTypes.STRING(64),
+                type: DataTypes.STRING(32),
                 allowNull: false
             },
             title: {
@@ -22,15 +22,19 @@ module.exports = class PlayerCharacter extends Model {
             },
             description: {
                 type: DataTypes.TEXT,
-                allowNull: true
+                allowNull: false
             },
             race: {
                 type: DataTypes.STRING(32),
-                allowNull: true
+                allowNull: false
             },
             class: {
                 type: DataTypes.STRING(32),
-                allowNull: true
+                allowNull: false
+            },
+            background: {
+                type: DataTypes.STRING(32),
+                allowNull: false
             },
             age: {
                 type: DataTypes.INTEGER,

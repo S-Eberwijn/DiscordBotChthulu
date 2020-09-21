@@ -17,7 +17,6 @@ module.exports.run = async (bot, message, args) => {
                         for (let i = 0; i < numberOfDice; i++) {
                             resultPerDie = Math.floor(Math.random() * ((typeOfDie - 1) + 1) + 1);
                             sumOfResults += resultPerDie;
-
                             if (resultPerDie == 1) {
                                 outputEmbed.addField(`Die #${i + 1}`, `\`\`\`fix\n ${resultPerDie.toString()}\`\`\``, true);
                             } else if (resultPerDie == typeOfDie) {
@@ -44,28 +43,21 @@ module.exports.run = async (bot, message, args) => {
                             if (toBeAddedValue) {
                                 if (typeof toBeAddedValue == 'number' && !isNaN(toBeAddedValue)) {
                                     outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie} + ${toBeAddedValue}!`);
-                                    outputEmbed.addField(`Result`, `[${sumOfResults} + ${toBeAddedValue}] = **${sumOfResults + toBeAddedValue}**`, false);
+                                    outputEmbed.addField(`RESULT`, `[${sumOfResults} + ${toBeAddedValue}] = **${sumOfResults + toBeAddedValue}**`, false);
                                 }
                             }
                         } else {
                             outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie}!`);
-                            outputEmbed.addField(`Result`, `**${sumOfResults}**`, false);
+                            outputEmbed.addField(`RESULT`, `**-= ${sumOfResults} =-**`, false);
                         }
                         message.channel.send(outputEmbed).then().catch(console.error);
                     }
 
-                } else {
-                    message.channel.send(`The type of die you entered is not correct!`)
-                }
-            } else {
-                message.channel.send(`Number of dice you want to roll is not a number!`)
-            }
-        } else {
-            message.channel.send(`2. Use e.g. \"!${this.help.name} 1d4\"`);
-        }
-    } else {
-        message.channel.send(`1. Use e.g. \"!${this.help.name} 1d4\"`);
-    }
+                } else return message.channel.send(`The type of die you entered is not correct!`);
+            } else return message.channel.send(`Number of dice you want to roll is not a number!`);
+        } else return message.channel.send(`2. Use e.g. \"!${this.help.name} 1d4\"`);
+    } else return message.channel.send(`1. Use e.g. \"!${this.help.name} 1d4\"`);
+    
 }
 
 module.exports.help = {

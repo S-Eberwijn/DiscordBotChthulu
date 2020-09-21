@@ -8,7 +8,7 @@ module.exports = class PastSession extends Model {
                 autoIncrement: true,
                 primaryKey: true
             },
-            session_id: {
+            message_id: {
                 type: DataTypes.STRING(),
                 allowNull: false
             }, 

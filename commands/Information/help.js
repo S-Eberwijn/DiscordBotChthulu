@@ -25,24 +25,33 @@ module.exports.run = async (bot, message, args) => {
 
         if (command["category"] == "General") {
             general += `${prefix}${command["name"]} - ${command["description"]}\n`;
-        } else if (command["category"] == "Information"){
+        } else if (command["category"] == "Information") {
             information += `${prefix}${command["name"]} - ${command["description"]}\n`;
-        } else if (command["category"] == "Dungeons & Dragons"){
+        } else if (command["category"] == "Dungeons & Dragons") {
             dungeonsAndDragons += `${prefix}${command["name"]} - ${command["description"]}\n`;
-        } else if (command["category"] == "Miscellaneous"){
+        } else if (command["category"] == "Miscellaneous") {
             miscellaneous += `${prefix}${command["name"]} - ${command["description"]}\n`;
         }
     }
-    const Embed = new MessageEmbed()
-        .setTitle('Chthulu Commands')
-        .addField("**__General__**\n", general)
-        .addField("**__Information__**\n", information)
-        .addField("**__Dungeons & Dragons__\n**", dungeonsAndDragons)
-        .addField("**__Miscellaneous__**\n", miscellaneous);
+    let helpEmbed = new MessageEmbed()
+        .setAuthor('Chthulu Commands', bot.user.displayAvatarURL())
+        //.setTitle('Chthulu Commands');
+    if (general != "") {
+        helpEmbed.addField("**__General__**\n", general);
+    }
+    if (information != "") {
+        helpEmbed.addField("**__Information__**\n", information)
+    }
+    if (dungeonsAndDragons != "") {
+        helpEmbed.addField("**__Dungeons & Dragons__**\n", dungeonsAndDragons)
+    }
+    if (miscellaneous != "") {
+        helpEmbed.addField("**__Miscellaneous__**\n", miscellaneous)
+    }
 
-    message.author.send(Embed).then(()=>{
+    message.author.send(helpEmbed).then(() => {
         message.channel.send("You can find the commands in a personal DM! :mailbox_with_mail:");
-    }).catch(()=>{
+    }).catch(() => {
         message.channel.send("Something went wrong, turn on your personal messages");
     });
 }

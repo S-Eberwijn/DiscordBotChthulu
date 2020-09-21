@@ -9,26 +9,20 @@ module.exports = async bot => {
 
     db.authenticate().then(async () => {
         console.log("Logged in to DB.");
-
         initializeDB(db);
-        
     }).catch(err => console.log(err));
-
-    // let date = new Date(new Date().getTime() + (0*24*60*60*1000))
-    // console.log(date.getDate());
 
     bot.user.setActivity(`Khthonios`, { type: "LISTENING" });
 
     //Initialize databases
     bot.stupidQuestionTracker = require("../jsonDb/stupidQuestionTracker.json");
     bot.ressurection = require("../jsonDb/ressurection.json");
-    bot.initialization = require("../jsonDb/initialization.json");
-    
+    //bot.initialization = require("../jsonDb/initialization.json");
+    bot.sessionAddUserRequest = require("../jsonDb/sessionAddUserRequest.json");
 
     //Update resurrection database
-    let ressurectionCount = bot.ressurection['resurrections'].count + 1;
     bot.ressurection['resurrections'] = {
-        count: ressurectionCount
+        count: bot.ressurection['resurrections'].count + 1
     };
     fs.writeFile("./jsonDb/ressurection.json", JSON.stringify(bot.ressurection, null, 4), err => {
         if (err) throw err;

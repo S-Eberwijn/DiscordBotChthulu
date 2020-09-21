@@ -16,13 +16,13 @@ module.exports.run = async (bot, message, args) => {
             .setColor(0x333333)
             .attachFiles([`./images/DnD/CharacterLevel/${character.get('level')}.png`])
             .setThumbnail(`attachment://${character.get('level')}.png`)
-            .setTitle(characterTitle)
+            .setTitle(`${characterTitle}(${character.get('age')})`)
             .setImage(character.get('picture_url'))
             .setDescription(character.get('description'))
             .addFields(
                 { name: '\*\*RACE\*\*', value: `${character.get('race')}`, inline: true },
                 { name: '\*\*CLASS\*\*', value: `${character.get('class')}`, inline: true },
-                { name: '\*\*AGE\*\*', value: `${character.get('age')}`, inline: true }
+                { name: '\*\*BACKGROUND\*\*', value: `${character.get('background')}`, inline: true }
             );
         message.channel.send(characterEmbed);
     } else {
@@ -37,7 +37,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
     name: "character",
     description: "Displays your (or the user you mentioned) character!",
-    category: "TEST"
+    category: "Dungeons & Dragons"
 }
 
 function hasWhiteSpace(s) {

@@ -7,5 +7,7 @@ module.exports = async (bot, member) => {
     //updateServerStatChannels(bot, member);
     
     //When a new person joins the server
-    member.roles.add(newcomerRole);
+    if(newcomerRole){
+        member.roles.add(newcomerRole);
+    }
 }

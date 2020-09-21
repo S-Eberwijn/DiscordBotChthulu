@@ -8,7 +8,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports.run = async (bot, message, args) => {
     const minecraftRole = message.guild.roles.cache.get('730468859286650920');
     const leagueOfLegendsRole = message.guild.roles.cache.get('730468912805838979');;
-    const dungeonsAndDragonsRole = message.guild.roles.cache.get('730468964215554148');
+    const playerRole = message.guild.roles.cache.find(role => role.name === 'Player');
 
 
     let verifyMessage = new MessageEmbed()
@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args) => {
         
         ${bot.emojis.cache.get('730470963002736660')} - ${minecraftRole.toString()}
         ${bot.emojis.cache.get('730470991473541201')} - ${leagueOfLegendsRole.toString()}
-        ${'🐉'} - ${dungeonsAndDragonsRole.toString()}
+        ${'🐉'} - ${playerRole.toString()}
 
         `)
         .setColor('#228B22');

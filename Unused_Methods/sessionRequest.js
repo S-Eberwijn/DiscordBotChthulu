@@ -1,5 +1,5 @@
-const { getSessionRequestPartyMembers, getSessionRequestPartyMembersIds, getSessionRequestObjective, getSessionRequestDateAndTime, createSessionRequestEmbed } = require("../../otherFunctions/sessionRequestFunctions")
-const SessionRequest = require('../../database/models/SessionRequest');
+const { getSessionRequestPartyMembers, getSessionRequestPartyMembersIds, getSessionRequestObjective, getSessionRequestDateAndTime, createSessionRequestEmbed } = require("./sessionRequestFunctions")
+const SessionRequest = require('../database/models/SessionRequest');
 // use: !session <sessionCommander> ... <n < 5> <dd/mm> <hh:mm> <objective>
 
 module.exports.run = async (bot, message, args) => {
@@ -71,7 +71,7 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "session",
+    name: "oldsession",
     description: "session status",
     category: "TEST"
 }

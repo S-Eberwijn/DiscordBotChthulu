@@ -8,7 +8,7 @@ module.exports = class PlannedSession extends Model {
                 autoIncrement: true,
                 primaryKey: true
             },
-            session_id: {
+            message_id: {
                 type: DataTypes.STRING(),
                 allowNull: false
             }, 
@@ -40,6 +40,10 @@ module.exports = class PlannedSession extends Model {
             },
             session_number: {
                 type: DataTypes.INTEGER,
+                allowNull: true
+            },
+            session_channel_id: {
+                type: DataTypes.STRING(32),
                 allowNull: true
             },
             session_status: {

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { decimalToHex, getDoubleDigitNumber } = require("../otherFunctions/numberFunctions");
+const { decimalToHex, getDoubleDigitNumber } = require("./numberFunctions");
 const {getUserFromMention} = require("./getUserFromMention");
 
 const days = [
@@ -12,14 +12,6 @@ const days = [
     'Saturday'
 ];
 
-exports.getSessionRequestPartyMembers = function (args, bot) {
-    let partyMembers = [];
-    while (args[0].startsWith('<@') && args[0].endsWith('>')) {
-        partyMembers.push(getUserFromMention(args[0], bot));
-        args.shift();
-    }
-    return partyMembers;
-}
 
 exports.getSessionRequestPartyMembersIds = function (partyMembers) {
     let partyMembersIds = [];

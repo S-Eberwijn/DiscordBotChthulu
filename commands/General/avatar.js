@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 
-
 module.exports.run = async (bot, message, args) => {
 
     const user = message.mentions.users.first() || message.author;
@@ -9,7 +8,6 @@ module.exports.run = async (bot, message, args) => {
         .setAuthor(user.username)
         .setImage(user.avatarURL());
     message.channel.send(avatarEmbed);
-
 }
 
 module.exports.help = {

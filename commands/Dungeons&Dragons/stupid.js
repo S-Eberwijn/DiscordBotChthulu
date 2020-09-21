@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs");  
 
 
 module.exports.run = async (bot, message, args) => {
@@ -50,7 +50,6 @@ module.exports.run = async (bot, message, args) => {
     } else {
         message.channel.send("My masters have not told me to listen to you!");
     }
-
 }
 
 module.exports.help = {

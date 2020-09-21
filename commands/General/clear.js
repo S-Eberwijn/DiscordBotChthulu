@@ -1,6 +1,3 @@
-//const discord = require('discord.js');
-const fs = require("fs");
-
 module.exports.run = async (bot, message, args) => {
     if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("You dont have the right permission!");
     if (!args[0]) return message.reply("Use: !clear <number>");
@@ -16,9 +13,7 @@ module.exports.run = async (bot, message, args) => {
                 message.channel.send(`${args[0]} messages deleted!`).then(msg => msg.delete({ timeout: 3000 }));
             }
         })
-    } else {
-        return message.channel.send("Only use numbers!")
-    }
+    } else return message.channel.send("Only use numbers!").then(msg => msg.delete({ timeout: 3000 }));
 }
 
 module.exports.help = {
