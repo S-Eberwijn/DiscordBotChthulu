@@ -4,91 +4,83 @@ const { MessageEmbed } = require('discord.js');
 const characterCreationQuestions = require('../../jsonDb/characterCreationQuestions.json');
 
 module.exports.run = async (bot, message, args) => {
-    const characterCreateCategory = bot.channels.cache.find(c => c.name == "--CHARACTER CREATION--" && c.type == "category");
-    let alreadyHasChannel = false;
+    const characterCreateCategory = message.member.guild.channels.cache.find(c => c.name == "--CHARACTER CREATION--" && c.type == "category");
+    let alreadyCreatedChannel = false;
     let newCharacterArray = [];
     let reactedEmoji = '';
 
     message.delete();
 
-    if (characterCreateCategory) {
-        message.guild.channels.cache.forEach(channel => {
-            if (channel.name == `${message.author.username.toLowerCase()}-${message.author.discriminator}`) {
-                message.channel.send("You already created a channel before!");
-                alreadyHasChannel = true;
-            }
-        });
-        if (alreadyHasChannel) return;
+    if (!characterCreateCategory) return message.channel.send('There is no category named \"--CHARACTER CREATION--\"!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
+    message.guild.channels.cache.forEach(channel => {
+        if (channel.name == `${message.author.username.toLowerCase()}-${message.author.discriminator}`) alreadyCreatedChannel = true;
+    });
+    if (alreadyCreatedChannel) return message.channel.send('You already created a channel before!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
 
-        message.guild.channels.create(`${message.author.username}-${message.author.discriminator}`, "text").then(async createdChannel => {
-            createdChannel.setParent(characterCreateCategory, { lockPermission: false });
-            createdChannel.updateOverwrite(message.channel.guild.roles.everyone, {
-                VIEW_CHANNEL: false,
-            });
-            createdChannel.updateOverwrite(message.guild.roles.cache.find(role => role.name === 'Dungeon Master'), {
-                VIEW_CHANNEL: true,
-            });
-            createdChannel.updateOverwrite(message.author, {
-                VIEW_CHANNEL: true,
-            });
-            createdChannel.send(createCreatedChannelEmbed(message)).then(() => {
-                askAllCharacterCreationQuestions(createdChannel, newCharacterArray, message).then(() => {
-                    createdChannel.send('Is this correct?', createNewCharacterEmbed(newCharacterArray)).then(async newCharacterEmbed => {
-                        await newCharacterEmbed.react('✔️');
-                        await newCharacterEmbed.react('✖️');
-                        const filter = (reaction, user) => {
-                            reactedEmoji = reaction.emoji.name;
-                            return (reaction.emoji.name === '✔️' || reaction.emoji.name === '✖️') && user.id === message.author.id;
-                        };
-                        newCharacterEmbed.awaitReactions(filter, {
-                            max: 1,
-                            time: 300000000,
-                            errors: ['time'],
-                        }).then(async () => {
-                            if (reactedEmoji === '✔️') {
-                                await createdChannel.setName(newCharacterArray[0].toString());
-                                let newPlayer;
-                                let foundPlayer = await Player.findOne({ where: { player_id: message.author.id } })
-                                if (foundPlayer) {
-                                    let foundCharacter = await PlayerCharacter.findOne({ where: { player_id: message.author.id, alive: 1 } });
-                                    if (foundCharacter) {
-                                        foundCharacter.alive = 0;
-                                        await foundCharacter.save();
-                                    }
-                                } else {
-                                    newPlayer = await Player.create({
-                                        player_id: message.author.id,
-                                        player_name: message.author.username
-                                    });
+    message.guild.channels.create(`${message.author.username}-${message.author.discriminator}`, "text").then(async createdChannel => {
+        createdChannel.setParent(characterCreateCategory, { lockPermission: false });
+        doesSeeChannel(createdChannel, message.channel.guild.roles.everyone, false);
+        doesSeeChannel(createdChannel, message.guild.roles.cache.find(role => role.name.includes('Dungeon Master')), true);
+        doesSeeChannel(createdChannel, message.author, true);
+
+        createdChannel.send(createCreatedChannelEmbed(message)).then(() => {
+            askAllCharacterCreationQuestions(createdChannel, newCharacterArray, message).then(() => {
+                createdChannel.send('Is this correct?', createNewCharacterEmbed(newCharacterArray)).then(async newCharacterEmbed => {
+                    await newCharacterEmbed.react('✔️');
+                    await newCharacterEmbed.react('✖️');
+                    const filter = (reaction, user) => {
+                        reactedEmoji = reaction.emoji.name;
+                        return (reaction.emoji.name === '✔️' || reaction.emoji.name === '✖️') && user.id === message.author.id;
+                    };
+                    newCharacterEmbed.awaitReactions(filter, {
+                        max: 1,
+                        time: 300000000,
+                        errors: ['time'],
+                    }).then(async () => {
+                        if (reactedEmoji === '✔️') {
+                            await createdChannel.setName(newCharacterArray[0].toString());
+                            let newPlayer;
+                            let foundPlayer = await Player.findOne({ where: { player_id: message.author.id, server_id: message.guild.id } })
+                            if (foundPlayer) {
+                                let foundCharacter = await PlayerCharacter.findOne({ where: { player_id: message.author.id, alive: 1, server_id: message.guild.id } });
+                                if (foundCharacter) {
+                                    foundCharacter.alive = 0;
+                                    await foundCharacter.save();
                                 }
-                                await PlayerCharacter.create({
+                            } else {
+                                newPlayer = await Player.create({
                                     player_id: message.author.id,
-                                    description: newCharacterArray[5],
-                                    race: newCharacterArray[1],
-                                    class: newCharacterArray[2],
-                                    background: newCharacterArray[3],
-                                    name: newCharacterArray[0],
-                                    picture_url: newCharacterArray[newCharacterArray.length - 1],
-                                    age: newCharacterArray[4],
-                                    alive: 1
+                                    player_name: message.author.username,
+                                    server_id: message.guild.id
                                 });
-                                createdChannel.updateOverwrite(message.author, {
-                                    SEND_MESSAGES: false,
-                                    ADD_REACTIONS: false
-                                });
-                                return;
-                            } else if (reactedEmoji === '✖️') {
-                                createdChannel.delete().catch();
-                                return;
                             }
-                        });
+                            await PlayerCharacter.create({
+                                player_id: message.author.id,
+                                description: newCharacterArray[5],
+                                race: newCharacterArray[1],
+                                class: newCharacterArray[2],
+                                background: newCharacterArray[3],
+                                name: newCharacterArray[0],
+                                picture_url: newCharacterArray[newCharacterArray.length - 1],
+                                age: newCharacterArray[4],
+                                alive: 1,
+                                server_id: message.guild.id
+                            });
+                            createdChannel.updateOverwrite(message.author, {
+                                SEND_MESSAGES: false,
+                                ADD_REACTIONS: false
+                            });
+                            return;
+                        } else if (reactedEmoji === '✖️') {
+                            createdChannel.delete().catch();
+                            return;
+                        }
                     });
                 });
             });
         });
-    } else {
-        message.channels.send("There is no category named \"--CHARACTER CREATION--\"!");
-    }
+    });
+
 }
 
 module.exports.help = {
@@ -308,6 +300,9 @@ function characterCreationQuestion(question, createdChannel, newCharacterArray, 
                 } else if (response.embeds.length > 0) {
                     newCharacterArray.push(response.embeds[0].url);
                     return true;
+                } else if (response.content.includes('http')) {
+                    newCharacterArray.push(response.content);
+                    return true;
                 } else {
                     createdChannel.send('This is an invalid picture!');
                     return false;
@@ -398,4 +393,10 @@ function createNewCharacterEmbed(newCharacterArray) {
             { name: '\*\*BACKGROUND\*\*', value: `${newCharacterArray[3]}`, inline: true },
         );
     return newCharacterEmbed;
+}
+
+function doesSeeChannel(channel, user, status) {
+    channel.updateOverwrite(user, {
+        VIEW_CHANNEL: status,
+    });
 }

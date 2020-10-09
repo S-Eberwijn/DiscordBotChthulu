@@ -21,8 +21,8 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "spell",
-    description: "Template for new commands",
-    category: "TEST"
+    description: "Returns a spell in an embed",
+    category: "Dungeons & Dragons"
 }
 
 function ProcesRequest(body, url) {
@@ -85,26 +85,7 @@ function ritual(message, stringMessage) {
     return;
 }
 function EmbedSpellInMessage(data, message, stringMessage) {
-    /*
-    let msg = new Discord.MessageEmbed()
-      .setColor('#0099ff')
-      .setTitle(data.school)
-      .setURL(baseURL + stringMessage)
-      .attachFiles(['./images/DnD/SpellSigils/' + data.school + '.png'])
-      .setAuthor(data.title, 'attachment://' + data.school + '.png')
-      .setDescription(data.description)
-      .setThumbnail('attachment://' + data.school + '.png')
-      .addFields(
-        { name: 'level: ', value: data.level },
-        { name: 'range: ', value: data.range },
-        { name: 'components: ', value: data.comp },
-        { name: 'duration: ', value: data.duration },
-      )
-      .setTimestamp()
-      .setFooter(data.casters);
-    */
-
-    let shortDescription
+    let shortDescription;
     if (data.description.length > 1020) {
         shortDescription = `${data.description.substring(0, 1020)}...`
     } else {

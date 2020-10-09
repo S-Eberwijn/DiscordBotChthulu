@@ -15,6 +15,10 @@ module.exports = class DungeonMaster extends Model {
             dungeon_master_name: {
                 type: DataTypes.STRING(64),
                 allowNull: true
+            },
+            server_id: {
+                type: DataTypes.STRING(32),
+                allowNull: false,
             }
         }, {
             tableName: 'dungeon_master',

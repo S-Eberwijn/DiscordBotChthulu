@@ -4,33 +4,24 @@ const PlayerCharacter = require('../../database/models/PlayerCharacter');
 module.exports.run = async (bot, message, args) => {
     //Returns the character of the message author or the mentioned user
     const user = message.mentions.users.first() || message.author;
-
     //Searches the database for a valid character
-    let character = await PlayerCharacter.findOne({ where: { player_id: user.id, alive: 1 } })
+    let character = await PlayerCharacter.findOne({ where: { player_id: user.id, alive: 1, server_id: message.guild.id } })
 
     //If a character is linked to the user, return a character card
-    if (character) {
-        let characterTitle = await getCharacterFullName(character);
-
-        const characterEmbed = new MessageEmbed()
-            .setColor(0x333333)
-            .attachFiles([`./images/DnD/CharacterLevel/${character.get('level')}.png`])
-            .setThumbnail(`attachment://${character.get('level')}.png`)
-            .setTitle(`${characterTitle}(${character.get('age')})`)
-            .setImage(character.get('picture_url'))
-            .setDescription(character.get('description'))
-            .addFields(
-                { name: '\*\*RACE\*\*', value: `${character.get('race')}`, inline: true },
-                { name: '\*\*CLASS\*\*', value: `${character.get('class')}`, inline: true },
-                { name: '\*\*BACKGROUND\*\*', value: `${character.get('background')}`, inline: true }
-            );
-        message.channel.send(characterEmbed);
-    } else {
-        //Could not find a linked character to the user
-        message.channel.send('This user does not have a character!');
-    }
-
-
+    if (!character) return message.channel.send('This user does not have a character!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
+    const characterEmbed = new MessageEmbed()
+        .setColor(0x333333)
+        .attachFiles([`./images/DnD/CharacterLevel/${character.get('level')}.png`])
+        .setThumbnail(`attachment://${character.get('level')}.png`)
+        .setTitle(`${await getCharacterFullName(character)}(${character.get('age')})`)
+        .setImage(character.get('picture_url'))
+        .setDescription(character.get('description'))
+        .addFields(
+            { name: '\*\*RACE\*\*', value: `${character.get('race')}`, inline: true },
+            { name: '\*\*CLASS\*\*', value: `${character.get('class')}`, inline: true },
+            { name: '\*\*BACKGROUND\*\*', value: `${character.get('background')}`, inline: true }
+        );
+    message.channel.send(characterEmbed);
 
 }
 
@@ -38,10 +29,6 @@ module.exports.help = {
     name: "character",
     description: "Displays your (or the user you mentioned) character!",
     category: "Dungeons & Dragons"
-}
-
-function hasWhiteSpace(s) {
-    return s.indexOf(' ') >= 0;
 }
 
 function getCharacterFullName(character) {
@@ -61,4 +48,8 @@ function getCharacterFullName(character) {
         }
     }
     return characterTitle;
+}
+
+function hasWhiteSpace(s) {
+    return s.indexOf(' ') >= 0;
 }

@@ -37,20 +37,24 @@ module.exports = async (bot, messageReaction, user) => {
                         let generalInfo = await GeneralInfo.findOne({ where: { server_id: messageReaction.message.guild.id } });
                         if (generalInfo) {
                             if (foundSessionRequest) {
-                                updatePartyNextSessionId(foundSessionRequest.get('session_party'), message.id);
+                                updatePartyNextSessionId(foundSessionRequest.get('session_party'), message.id, message.guild.id);
                                 plannedSessionsChannel.send(createPlannedSessionEmbed(user.id, generalInfo.get('session_number'), message.embeds[0])).then(async message => {
-                                    createPlannedSessionDatabaseEntry(message.id, foundSessionRequest, generalInfo, user.id);
+                                    createPlannedSessionDatabaseEntry(message.id, foundSessionRequest, generalInfo, user.id, message.guild.id);
                                     await message.react('🟢');
                                     await message.react('🔴');
+                                    let foundPlannedSession = await PlannedSession.findOne({ where: { message_id: message.id, server_id: message.guild.id } })
+                                    bot.channels.cache.find(c => c.id == foundSessionRequest.get('session_channel_id') && c.type == "text").setName(`session-${foundPlannedSession.get('session_number')}`);
+    
                                 });
+                               
                                 foundSessionRequest.destroy();
                                 message.delete();
                                 return;
                             } else return message.channel.send('Something went wrong; Cannot find the right session request in the database!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
                         } else return message.channel.send('Something went wrong; Cannot find this server in the database!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
                     } else if (emoji.name === '✖️') {
-                        await deleteSessionRequestChannel(message, message.id)
-                        await deleteSessionRequest(message.id);
+                        await deleteSessionRequestChannel(message, message.id, message.guild.id)
+                        await deleteSessionRequest(message.id, message.guild.id);
                         message.delete();
                         return;
                     } else return message.reactions.resolve(emoji.id).users.remove(user.id).catch(err => console.log(err));
@@ -144,24 +148,26 @@ module.exports = async (bot, messageReaction, user) => {
             if (message.channel.id === plannedSessionsChannel.id) {
                 if (message.guild.member(user).roles.cache.has(dmRole.id)) {
                     let editedEmbed = new MessageEmbed(message.embeds[0]);
-                    let foundPlannedSession = await PlannedSession.findOne({ where: { message_id: message.id } });
+                    let foundPlannedSession = await PlannedSession.findOne({ where: { message_id: message.id, server_id: message.guild.id } });
                     if (foundPlannedSession) {
                         let sessionStatus;
                         if (emoji.name === '🟢') {
                             sessionStatus = 'PLAYED';
                             editedEmbed.setTitle(`${editedEmbed.title} [${sessionStatus}]`);
-                            createPastSessionDatabaseEntry(message.id, foundPlannedSession, sessionStatus).then(() => {
+                            createPastSessionDatabaseEntry(message.id, foundPlannedSession, sessionStatus, message.guild.id).then(() => {
                                 foundPlannedSession.destroy();
                                 pastSessionsChannel.send(editedEmbed);
                                 message.delete();
+                                bot.channels.cache.find(c => c.id == foundPlannedSession.get('session_channel_id') && c.type == "text").delete();
                             });
                         } else if (emoji.name === '🔴') {
                             sessionStatus = 'CANCELED';
                             editedEmbed.setTitle(`${editedEmbed.title} [${sessionStatus}]`);
-                            createPastSessionDatabaseEntry(message.id, foundPlannedSession, sessionStatus).then(() => {
+                            createPastSessionDatabaseEntry(message.id, foundPlannedSession, sessionStatus, message.guild.id).then(() => {
                                 foundPlannedSession.destroy();
                                 pastSessionsChannel.send(editedEmbed);
                                 message.delete();
+                                bot.channels.cache.find(c => c.id == foundPlannedSession.get('session_channel_id') && c.type == "text").delete();
                             });
                         } else return message.reactions.resolve(emoji.id).users.remove(user.id).catch(err => console.log(err));
                     } else return message.channel.send('Could not find the planned session in the database!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
@@ -177,7 +183,7 @@ String.prototype.replaceAt = function (index, replacement) {
     }
     return this.substring(0, index) + replacement + this.substring(index + 1);
 }
-function createPlannedSessionDatabaseEntry(sessionId, foundSessionRequest, generalInfo, dungeonMasterId) {
+function createPlannedSessionDatabaseEntry(sessionId, foundSessionRequest, generalInfo, dungeonMasterId, serverId) {
     PlannedSession.create({
         message_id: sessionId,
         session_commander_id: foundSessionRequest.get('session_commander_id'),
@@ -187,17 +193,18 @@ function createPlannedSessionDatabaseEntry(sessionId, foundSessionRequest, gener
         session_number: generalInfo.get('session_number'),
         dungeon_master_id: dungeonMasterId,
         session_channel_id: foundSessionRequest.get('session_channel_id'),
-        session_status: 'NOT PLAYED YET'
+        session_status: 'NOT PLAYED YET',
+        server_id: serverId
     }).then(() => {
         generalInfo.session_number += 1;
         generalInfo.save();
     });
 }
-function updatePartyNextSessionId(party, next_session_id) {
+function updatePartyNextSessionId(party, next_session_id, serverId) {
     party.forEach(player => {
         PlayerCharacter.update(
             { next_session_id: next_session_id },
-            { where: { player_id: player, alive: 1 } });
+            { where: { player_id: player, alive: 1, server_id: serverId } });
     });
 }
 function createPlannedSessionEmbed(dungeonMasterId, sessionNumber, editedEmbed) {
@@ -205,13 +212,13 @@ function createPlannedSessionEmbed(dungeonMasterId, sessionNumber, editedEmbed) 
     editedEmbed.setTitle(`**Session_${sessionNumber}: **`);
     return editedEmbed;
 }
-function deleteSessionRequest(sessionId) {
-    SessionRequest.findOne({ where: { message_id: sessionId } }).then(sessionRequest => {
+function deleteSessionRequest(sessionId, serverId) {
+    SessionRequest.findOne({ where: { message_id: sessionId, server_id: serverId } }).then(sessionRequest => {
         sessionRequest.destroy();
     });
 }
-function deleteSessionRequestChannel(message, sessionId) {
-    SessionRequest.findOne({ where: { message_id: sessionId } }).then(sessionRequest => {
+function deleteSessionRequestChannel(message, sessionId, serverId) {
+    SessionRequest.findOne({ where: { message_id: sessionId, server_id: serverId } }).then(sessionRequest => {
         message.guild.channels.cache.find(r => r.id === sessionRequest.get('session_channel_id')).delete();
     });
 }
@@ -251,7 +258,7 @@ function checkIfPlayerAlreadyRequestedOrDenied(bot, userId, emojiId, message, se
     }
     return false;
 }
-async function createPastSessionDatabaseEntry(id, foundPlannedSession, sessionStatus) {
+async function createPastSessionDatabaseEntry(id, foundPlannedSession, sessionStatus, serverId) {
     return new Promise(async function (resolve, reject) {
         await PastSession.create({
             message_id: id,
@@ -261,7 +268,8 @@ async function createPastSessionDatabaseEntry(id, foundPlannedSession, sessionSt
             objective: foundPlannedSession.get('objective'),
             session_number: foundPlannedSession.get('session_number'),
             dungeon_master_id: foundPlannedSession.get('dungeon_master_id'),
-            session_status: sessionStatus
+            session_status: sessionStatus,
+            server_id: serverId
         }).then(() => { resolve() }).catch(err => console.log(err));
     })
 }

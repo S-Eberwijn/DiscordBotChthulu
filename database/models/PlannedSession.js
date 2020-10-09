@@ -49,6 +49,10 @@ module.exports = class PlannedSession extends Model {
             session_status: {
                 type: DataTypes.STRING(16),
                 allowNull: true
+            },
+            server_id: {
+                type: DataTypes.STRING(32),
+                allowNull: false,
             }
         }, {
             tableName: 'planned_session',

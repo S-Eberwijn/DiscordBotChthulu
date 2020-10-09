@@ -15,6 +15,10 @@ module.exports = class Player extends Model {
             player_name: {
                 type: DataTypes.STRING(32),
                 allowNull: false
+            },
+            server_id: {
+                type: DataTypes.STRING(32),
+                allowNull: false,
             }
         }, {
             tableName: 'player',

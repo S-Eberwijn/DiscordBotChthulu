@@ -37,6 +37,10 @@ module.exports = class SessionRequest extends Model {
             objective: {
                 type: DataTypes.STRING(255),
                 allowNull: true
+            },
+            server_id: {
+                type: DataTypes.STRING(32),
+                allowNull: false,
             }
         }, {
             tableName: 'session_request',

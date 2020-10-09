@@ -17,6 +17,10 @@ module.exports = class CharacterSession extends Model {
                 type: DataTypes.STRING(32),
                 allowNull: false
             },
+            server_id: {
+                type: DataTypes.STRING(32),
+                allowNull: false,
+            }
 
         }, {
             tableName: 'quest',

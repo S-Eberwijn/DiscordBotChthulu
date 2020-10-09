@@ -59,6 +59,10 @@ module.exports = class PlayerCharacter extends Model {
             alive: {
                 type: DataTypes.INTEGER,
                 allowNull: false
+            },
+            server_id: {
+                type: DataTypes.STRING(32),
+                allowNull: false,
             }
         }, {
             tableName: 'player_character',

@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const SessionRequest = require('../../database/models/SessionRequest');
 const PlayerCharacter = require('../../database/models/PlayerCharacter');
-const fs = require("fs");  
+const fs = require("fs");
 // use: !session <n < 5> <dd/mm> <hh:mm> <objective>
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const monthAndNumberOfDaysMap = new Map([[1, 31], [2, 28], [3, 31], [4, 30], [5, 31], [6, 30], [7, 31], [8, 31], [9, 30], [10, 31], [11, 30], [12, 31]]);
@@ -11,70 +11,71 @@ let objective = '';
 
 
 module.exports.run = async (bot, message, args) => {
-    sliceValueForObjective = 1 + this.help.name.length + 1;
     message.delete();
+
+
+    if (!args[0]) return message.reply('You did not provide any arguments!').then(msg => msg.delete({ timeout: 3000 }));
+    sliceValueForObjective = 1 + this.help.name.length + 1;
+
     const sessionRequestCatagory = bot.channels.cache.find(c => c.name == "--SESSION REQUESTS--" && c.type == "category");
     const sessionRequestChannel = bot.channels.cache.find(c => c.name == "session-request" && c.type == "text");
 
-    if (!args[0]) return message.reply('You did not provide any arguments!').then(msg => msg.delete({ timeout: 3000 }));
-
     if (args[0].toLowerCase() == functionArguments[0].toLowerCase()) {
-        if (sessionRequestChannel) {
-            if (message.channel.id === sessionRequestChannel.id) {
-                if (message.guild.roles.cache.find(role => role.name === 'Player')) {
-                    if (message.guild.member(message.author).roles.cache.has(message.guild.roles.cache.find(role => role.name === 'Player').id)) {
-                        sliceValueForObjective += functionArguments[0].length + 1;
-                        try {
-                            let playerCharacter = await PlayerCharacter.findOne({where: {player_id: message.author.id, alive: 1}});
-                            message.channel.send(createSessionRequestEmbed(getSessionRequestPartyMembers(message), message, args, playerCharacter.get('picture_url'))).then(async sessionRequestEmbed => {
-                                let sessionRequest = await createSessionRequestDatabaseEntry(sessionRequestEmbed, getSessionRequestPartyMembers(message), getSessionRequestDateAndTime(message, args), objective);
-                                await sessionRequestEmbed.react('✔️');
-                                await sessionRequestEmbed.react('✖️');
-                                await sessionRequestEmbed.react('732604232582037604');
-                                await sessionRequestEmbed.react('732605879165386782');
-                                await sessionRequestEmbed.react('732605922119254067');
-                                await sessionRequestEmbed.react('732607204279975976');
-                                await sessionRequestEmbed.react('732611171068280833');
+        if (!sessionRequestChannel) return message.channel.send('There is no \"session-request\" channel found on this server!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
+        if (!(message.channel.id === sessionRequestChannel.id)) return message.channel.send('Please send the request in the \"session-request\" channel!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
+        if (!message.guild.roles.cache.find(role => role.name === 'Player')) return message.channel.send('Did not find a \"Player\" role on this server. Please add one!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
+        if (!message.guild.member(message.author).roles.cache.has(message.guild.roles.cache.find(role => role.name === 'Player').id)) return message.channel.send('It seems like you do not have the \"Player\" role! Get lost kid.').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
 
-                                message.guild.channels.create(`${sessionRequestEmbed.id}`, "text").then(async createdChannel => {
-                                    createdChannel.setParent(sessionRequestCatagory, { lockPermission: false });
-                                    createdChannel.updateOverwrite(message.channel.guild.roles.everyone, {
-                                        VIEW_CHANNEL: false,
-                                    });
-                                    createdChannel.updateOverwrite(message.guild.roles.cache.find(role => role.name === 'Dungeon Master'), {
-                                        VIEW_CHANNEL: true,
-                                    });
-                                    sessionRequest.get('session_party').forEach(playerId => {
-                                        createdChannel.updateOverwrite(bot.users.cache.get(playerId), {
-                                            VIEW_CHANNEL: true,
-                                        });
-                                    });
-                                    sessionRequest.session_channel_id = createdChannel.id;
-                                    sessionRequest.save();
+        sliceValueForObjective += functionArguments[0].length + 1;
+        try {
+            let playerCharacter = await PlayerCharacter.findOne({ where: { player_id: message.author.id, alive: 1, server_id: message.guild.id } });
+            message.channel.send(createSessionRequestEmbed(getSessionRequestPartyMembers(message), message, args, playerCharacter.get('picture_url'))).then(async sessionRequestEmbed => {
+                const addUserEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'adduser');
+                if (!addUserEmoji) return message.channel.send('This server does not have an emoji called \"adduser\"... thus I cannot make the session embed').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
+                let sessionRequest = await createSessionRequestDatabaseEntry(sessionRequestEmbed, getSessionRequestPartyMembers(message), getSessionRequestDateAndTime(message, args), objective, message.guild.id);
+                await sessionRequestEmbed.react('✔️');
+                await sessionRequestEmbed.react('✖️');
+                //await sessionRequestEmbed.react('732604232582037604');
+                //await sessionRequestEmbed.react('732605879165386782');
+                //await sessionRequestEmbed.react('732605922119254067');
+                //await sessionRequestEmbed.react('732607204279975976');
 
-                                    bot.sessionAddUserRequest['sessions'][bot.sessionAddUserRequest['sessions'].length] = {
-                                        session_channel_id: createdChannel.id,
-                                        requested: [],
-                                        denied: []
-                                    };
-                                    fs.writeFile("./jsonDb/sessionAddUserRequest.json", JSON.stringify(bot.sessionAddUserRequest, null, 4), err => {
-                                        if (err) throw err;
-                                    });
+                await sessionRequestEmbed.react(addUserEmoji);
 
-                                });
-                            }).catch(() => { return sessionRequestEmbed.delete() });
-                        } catch (error) { return };
-                    } else return message.channel.send('It seems like you do not have the \"Player\" role! Get lost kid.').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
-                } else return message.channel.send('Did not find a \"Player\" role on this server. Please add one!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
-            } else return message.channel.send('Please send the request in the \"session-request\" channel!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
-        } else return message.channel.send('There is no \"session-request\" channel found on this server!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
+                message.guild.channels.create(`${message.author.username}s-request`, "text").then(async createdChannel => {
+                    createdChannel.setParent(sessionRequestCatagory, { lockPermission: false });
+                    createdChannel.updateOverwrite(message.channel.guild.roles.everyone, {
+                        VIEW_CHANNEL: false,
+                    });
+                    createdChannel.updateOverwrite(message.guild.roles.cache.find(role => role.name === 'Dungeon Master'), {
+                        VIEW_CHANNEL: true,
+                    });
+                    sessionRequest.get('session_party').forEach(playerId => {
+                        createdChannel.updateOverwrite(bot.users.cache.get(playerId), {
+                            VIEW_CHANNEL: true,
+                        });
+                    });
+                    sessionRequest.session_channel_id = createdChannel.id;
+                    sessionRequest.save();
+
+                    bot.sessionAddUserRequest['sessions'][bot.sessionAddUserRequest['sessions'].length] = {
+                        session_channel_id: createdChannel.id,
+                        requested: [],
+                        denied: []
+                    };
+                    fs.writeFile("./jsonDb/sessionAddUserRequest.json", JSON.stringify(bot.sessionAddUserRequest, null, 4), err => {
+                        if (err) throw err;
+                    });
+                });
+            }).catch(() => { return sessionRequestEmbed.delete() });
+        } catch (error) { };
     }
-}
+}  
 
 module.exports.help = {
     name: "session",
     description: "session status",
-    category: "TEST"
+    category: "Dungeons & Dragons"
 }
 
 function createSessionRequestEmbed(sessionParty, message, args, icon) {
@@ -176,13 +177,14 @@ function getDoubleDigitNumber(number) {
     return doubleDigitNumber;
 }
 
-function createSessionRequestDatabaseEntry(sessionRequestEmbed, partyMembers, displayDate, objective) {
+function createSessionRequestDatabaseEntry(sessionRequestEmbed, partyMembers, displayDate, objective, serverId) {
     let sessionRequest = SessionRequest.create({
         message_id: sessionRequestEmbed.id,
         session_commander_id: partyMembers[0],
         session_party: partyMembers,
         date: displayDate.toString(),
-        objective: objective
+        objective: objective,
+        server_id: serverId
     });
     return sessionRequest;
 }
