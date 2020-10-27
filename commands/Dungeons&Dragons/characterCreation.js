@@ -15,6 +15,7 @@ module.exports.run = async (bot, message, args) => {
     message.guild.channels.cache.forEach(channel => {
         if (channel.name == `${message.author.username.toLowerCase()}-${message.author.discriminator}`) alreadyCreatedChannel = true;
     });
+    if (message.member.roles.cache.has(message.guild.roles.cache.find(role => role.name.includes('Dungeon Master')).id)) return message.channel.send('You\'re not a player, get lost kid!').then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
     if (alreadyCreatedChannel) return message.channel.send('You already created a channel before!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
 
     message.guild.channels.create(`${message.author.username}-${message.author.discriminator}`, "text").then(async createdChannel => {
@@ -22,7 +23,7 @@ module.exports.run = async (bot, message, args) => {
         doesSeeChannel(createdChannel, message.channel.guild.roles.everyone, false);
         doesSeeChannel(createdChannel, message.guild.roles.cache.find(role => role.name.includes('Dungeon Master')), true);
         doesSeeChannel(createdChannel, message.author, true);
-
+        
         createdChannel.send(createCreatedChannelEmbed(message)).then(() => {
             askAllCharacterCreationQuestions(createdChannel, newCharacterArray, message).then(() => {
                 createdChannel.send('Is this correct?', createNewCharacterEmbed(newCharacterArray)).then(async newCharacterEmbed => {
@@ -145,7 +146,7 @@ function characterCreationQuestion(question, createdChannel, newCharacterArray, 
             let newCharacterClass = '';
             let classCount = 0;
             let classEmbed = new MessageEmbed()
-                .setTitle('ALL POSSIBLE RACES!');
+                .setTitle('ALL POSSIBLE CLASSES!');
             for (let index = 0; index < 3; index++) {
                 let classString = '';
                 for (let indexRaces = 0; indexRaces < characterCreationQuestions[2].answers.length / 3; indexRaces++) {

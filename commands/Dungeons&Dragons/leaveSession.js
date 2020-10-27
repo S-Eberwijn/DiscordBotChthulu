@@ -13,7 +13,7 @@ module.exports.run = async (bot, message, args) => {
         if (sessionParty.includes(user.id)) return message.channel.send(`You are not in this session, thus you can not leave it!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
         sessionParty.splice(sessionParty.indexOf(user.id), 1);
         try {
-            await bot.channels.cache.find(c => c.name == "session-request" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
+            await message.guild.channels.cache.find(c => c.name == "session-request" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
                 const sessionChannel = await message.guild.channels.cache.find(r => r.id === session.get('session_channel_id'));
                 if (session.get('session_commander_id') === user.id) {
                     msg.delete();
@@ -34,7 +34,7 @@ module.exports.run = async (bot, message, args) => {
             })
         } catch (error) { }
         try {
-            await bot.channels.cache.find(c => c.name == "planned-sessions" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
+            await  message.guild.channels.cache.find(c => c.name == "planned-sessions" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
                 const sessionChannel = await message.guild.channels.cache.find(r => r.id === session.get('session_channel_id'));
                 if (session.get('session_commander_id') === user.id) {
                     msg.delete();

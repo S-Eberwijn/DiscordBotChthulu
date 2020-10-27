@@ -2,6 +2,7 @@ const GeneralInfo = require('../database/models/GeneralInfo.js');
 const PlayerCharacter = require('../database/models/PlayerCharacter');
 
 //FIX THIS
+//TODO FIX THE PERMISSIONS
 
 exports.renameNickname = async function (oldState, newState) {
     if (oldState.channelID === newState.channelID) return;

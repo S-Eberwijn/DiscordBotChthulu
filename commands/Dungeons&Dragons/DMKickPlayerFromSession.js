@@ -9,14 +9,14 @@ module.exports.run = async (bot, message, args) => {
         let dungeonMasterIds = await getAllDungeonMasterIds(message.guild.id);
         const sessionChannelIdArray = await collectAllSessionChannelIds(message.guild.id);
         if (!sessionChannelIdArray.includes(message.channel.id)) return message.channel.send('This is not a session\'s channel! Type this in a session\'s channel of a session you want to leave!').then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-        if (message.member.roles.cache.has(message.guild.roles.cache.find(role => role.name === 'Dungeon Master').id) && message.mentions.users.first()) {
+        if (message.member.roles.cache.has(message.guild.roles.cache.find(role => role.name.includes('Dungeon Master')).id) && message.mentions.users.first()) {
             if (dungeonMasterIds.includes(message.mentions.users.first().id)) return message.channel.send('Dungeon Masters can not leave sessions!').then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
 
             let sessionParty = session.get('session_party');
             if (sessionParty.includes(message.mentions.users.first().id)) {
                 sessionParty.splice(sessionParty.indexOf(message.mentions.users.first().id), 1);
                 try {
-                    await bot.channels.cache.find(c => c.name == "session-request" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
+                    await message.guild.channels.cache.find(c => c.name == "session-request" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
                         const sessionChannel = await message.guild.channels.cache.find(r => r.id === session.get('session_channel_id'));
                         if (session.get('session_commander_id') === message.mentions.users.first().id) {
                             msg.delete();
@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
                     })
                 } catch (error) { }
                 try {
-                    await bot.channels.cache.find(c => c.name == "planned-sessions" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
+                    await message.guild.channels.cache.find(c => c.name == "planned-sessions" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
                         const sessionChannel = await message.guild.channels.cache.find(r => r.id === session.get('session_channel_id'));
                         if (session.get('session_commander_id') === message.mentions.users.first().id) {
                             msg.delete();

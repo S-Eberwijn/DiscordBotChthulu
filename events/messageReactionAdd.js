@@ -22,11 +22,11 @@ module.exports = async (bot, messageReaction, user) => {
     const { message, emoji } = messageReaction;
 
     if (message.guild != null) {
-        let sessionRequestChannel = bot.channels.cache.find(c => c.name == "session-request" && c.type == "text");
-        let plannedSessionsChannel = bot.channels.cache.find(c => c.name == "planned-sessions" && c.type == "text");
-        let pastSessionsChannel = bot.channels.cache.find(c => c.name == "past-sessions" && c.type == "text");
+        let sessionRequestChannel = message.guild.channels.cache.find(c => c.name == "session-request" && c.type == "text");
+        let plannedSessionsChannel = message.guild.channels.cache.find(c => c.name == "planned-sessions" && c.type == "text");
+        let pastSessionsChannel = message.guild.channels.cache.find(c => c.name == "past-sessions" && c.type == "text");
 
-        let dmRole = messageReaction.message.guild.roles.cache.find(role => role.name === 'Dungeon Master');
+        let dmRole = messageReaction.message.guild.roles.cache.find(role => role.name.includes('Dungeon Master'));
         let playerRole = messageReaction.message.guild.roles.cache.find(role => role.name === 'Player');
 
         if (sessionRequestChannel) {

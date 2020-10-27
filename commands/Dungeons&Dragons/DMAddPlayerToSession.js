@@ -8,7 +8,7 @@ module.exports.run = async (bot, message, args) => {
         const dungeonMasterIds = await getAllDungeonMasterIds(message.guild.id);
         const sessionChannelIdArray = await collectAllSessionChannelIds(message.guild.id);
         const user = message.mentions.users.first();
-        if (!message.member.roles.cache.has(message.guild.roles.cache.find(role => role.name === 'Dungeon Master').id)) return message.channel.send('You\'re not a Dungeon Master!').then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
+        if (!message.member.roles.cache.has(message.guild.roles.cache.find(role => role.name.includes('Dungeon Master')).id)) return message.channel.send('You\'re not a Dungeon Master!').then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
         if (!user) return message.channel.send('You did not provide a player, use \"!add <@user_id>\"').then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
         if (!sessionChannelIdArray.includes(message.channel.id)) return message.channel.send('This is not a session\'s channel! Type this in a session\'s channel of a session you want to add a player in!').then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
         const session = await findRightSession(message.channel.id, message.guild.id);
@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
         const sessionChannel = await message.guild.channels.cache.find(r => r.id === session.get('session_channel_id'));
 
         try {
-            await bot.channels.cache.find(c => c.name == "session-request" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
+            await message.guild.channels.cache.find(c => c.name == "session-request" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
                 let editedEmbed = msg.embeds[0];
                 editedEmbed.fields[1].name = editedEmbed.fields[1].name.replace(`${sessionParty.length - 1}`, `${sessionParty.length}`);
                 editedEmbed.fields[1].value = `${createPlayerMention(sessionParty)}`;
@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
             })
         } catch (error) {}
         try {
-            await bot.channels.cache.find(c => c.name == "planned-sessions" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
+            await message.guild.channels.cache.find(c => c.name == "planned-sessions" && c.type == "text").messages.fetch(session.get('message_id')).then(async msg => {
                 let editedEmbed = msg.embeds[0];
                 editedEmbed.fields[1].name = editedEmbed.fields[1].name.replace(`${sessionParty.length - 1}`, `${sessionParty.length}`);
                 editedEmbed.fields[1].value = `${createPlayerMention(sessionParty)}`;
