@@ -1,9 +1,9 @@
-const Player = require('../database/models/Player.js');
-const SessionRequest = require('../database/models/SessionRequest.js');
+//const Player = require('../database/models/Player.js');
+//const SessionRequest = require('../database/models/SessionRequest.js');
 
 
 module.exports = async (bot, messageReaction, user) => {
-    const { message, emoji } = messageReaction;
+    const { emoji } = messageReaction;
     // const roleSelectionChannel = bot.channels.cache.find(c => c.name == "role-selection" && c.type == "text");
     // const sessionRequestChannel = bot.channels.cache.find(c => c.name == "session-request" && c.type == "text");
     // const dmRole = messageReaction.message.guild.roles.cache.find(role => role.name === 'Dungeon Master');

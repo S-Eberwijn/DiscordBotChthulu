@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args) => {
     if (!args[0]) return message.channel.send(`You didn\'t provide any arguments!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
 
     let numberOfDice = parseInt(args[0].split("d")[0]);
-    if (!(typeof numberOfDice == 'number' && !isNaN(numberOfDice))) return message.channel.send(`Number of dice you want to roll is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
+    if (isNaN(numberOfDice)) return message.channel.send(`Number of dice you want to roll is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
     if (!(numberOfDice < 25)) return message.channel.send(`Number of dice you want to roll can not be higher than 24!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
 
     let outputEmbed = new MessageEmbed();
@@ -18,7 +18,7 @@ module.exports.run = async (bot, message, args) => {
         } else if (args[1]) {
             toBeAddedPostiveValue = parseInt(args[1]);
         } else return message.channel.send(`You did not type anything after the \"+\"`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-        if (!(typeof toBeAddedPostiveValue == 'number' && !isNaN(toBeAddedPostiveValue))) return message.channel.send(`The amount you want to add is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
+        if (isNaN(toBeAddedPostiveValue)) return message.channel.send(`The amount you want to add is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
     } else if (args[1] && args[1].includes('+')) {
         typeOfDie = parseInt(args[0].split("d")[1]);
         if (args[1].length > 1) {
@@ -31,7 +31,7 @@ module.exports.run = async (bot, message, args) => {
         typeOfDie = parseInt(args[0].split("d")[1]);
     }
 
-    
+
     if (args[0].includes("-")) {
         typeOfDie = parseInt(args[0].split("d")[1].split('-')[0]);
         if (args[0].split("d")[1].split('-')[1]) {
@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
         } else if (args[1]) {
             toBeAddedNegativeValue = parseInt(args[1]);
         } else return message.channel.send(`You did not type anything after the \"-\"`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-        if (!(typeof toBeAddedNegativeValue == 'number' && !isNaN(toBeAddedNegativeValue))) return message.channel.send(`The amount you want to add is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
+        if (isNaN(toBeAddedNegativeValue)) return message.channel.send(`The amount you want to add is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
     } else if (args[1] && args[1].includes('-')) {
         typeOfDie = parseInt(args[0].split("d")[1]);
         if (args[1].length > 1) {
@@ -53,8 +53,8 @@ module.exports.run = async (bot, message, args) => {
     }
 
 
-    if (!(typeof typeOfDie == 'number' && !isNaN(typeOfDie))) return message.channel.send(`The type of die you entered is not correct!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-    if (!(typeOfDie % 2 == 0)) return message.channel.send(`The type of die you want to roll must be even!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
+    if (isNaN(typeOfDie)) return message.channel.send(`The type of die you entered is not correct!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
+    if (typeOfDie % 2 != 0) return message.channel.send(`The type of die you want to roll must be even!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
 
 
     for (let i = 0; i < numberOfDice; i++) {

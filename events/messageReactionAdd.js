@@ -2,7 +2,6 @@ const { MessageEmbed } = require('discord.js');
 const SessionRequest = require('../database/models/SessionRequest');
 const PlannedSession = require('../database/models/PlannedSession');
 const PlayerCharacter = require('../database/models/PlayerCharacter.js');
-const Player = require('../database/models/Player.js');
 const GeneralInfo = require('../database/models/GeneralInfo.js');
 const PastSession = require('../database/models/PastSession.js');
 const fs = require("fs");
@@ -44,9 +43,9 @@ module.exports = async (bot, messageReaction, user) => {
                                     await message.react('🔴');
                                     let foundPlannedSession = await PlannedSession.findOne({ where: { message_id: message.id, server_id: message.guild.id } })
                                     bot.channels.cache.find(c => c.id == foundSessionRequest.get('session_channel_id') && c.type == "text").setName(`session-${foundPlannedSession.get('session_number')}`);
-    
+
                                 });
-                               
+
                                 foundSessionRequest.destroy();
                                 message.delete();
                                 return;
@@ -64,7 +63,7 @@ module.exports = async (bot, messageReaction, user) => {
                         await SessionRequest.findOne({ where: { message_id: message.id } }).then(async sessionRequest => {
                             if (!checkIfPlayerIsAlreadyInParty(sessionRequest.get('session_party'), user.id)) {
                                 if (sessionRequest.get('session_party').length < 5) {
-                                    if (!checkIfPlayerAlreadyRequestedOrDenied(bot, user.id, emoji.id, message, sessionRequest.get('session_channel_id'))) {
+                                    if (!checkIfPlayerAlreadyRequestedOrDenied(bot, user.id, message, sessionRequest.get('session_channel_id'))) {
                                         for (let i = 0; i < bot.sessionAddUserRequest['sessions'].length; i++) {
                                             if (bot.sessionAddUserRequest['sessions'][i].session_channel_id === sessionRequest.get('session_channel_id')) {
                                                 bot.sessionAddUserRequest['sessions'][i].requested[bot.sessionAddUserRequest['sessions'][i].requested.length] = { "user_id": `${user.id}` };
@@ -212,13 +211,13 @@ function createPlannedSessionEmbed(dungeonMasterId, sessionNumber, editedEmbed) 
     editedEmbed.setTitle(`**Session_${sessionNumber}: **`);
     return editedEmbed;
 }
-function deleteSessionRequest(sessionId, serverId) {
-    SessionRequest.findOne({ where: { message_id: sessionId, server_id: serverId } }).then(sessionRequest => {
+async function deleteSessionRequest(sessionId, serverId) {
+    await SessionRequest.findOne({ where: { message_id: sessionId, server_id: serverId } }).then(sessionRequest => {
         sessionRequest.destroy();
     });
 }
-function deleteSessionRequestChannel(message, sessionId, serverId) {
-    SessionRequest.findOne({ where: { message_id: sessionId, server_id: serverId } }).then(sessionRequest => {
+async function deleteSessionRequestChannel(message, sessionId, serverId) {
+    await SessionRequest.findOne({ where: { message_id: sessionId, server_id: serverId } }).then(sessionRequest => {
         message.guild.channels.cache.find(r => r.id === sessionRequest.get('session_channel_id')).delete();
     });
 }
@@ -238,7 +237,7 @@ function checkIfPlayerIsAlreadyInParty(party, playerId) {
         return true;
     } else return false;
 }
-function checkIfPlayerAlreadyRequestedOrDenied(bot, userId, emojiId, message, sessionChannelId) {
+function checkIfPlayerAlreadyRequestedOrDenied(bot, userId, message, sessionChannelId) {
     for (let i = 0; i < bot.sessionAddUserRequest['sessions'].length; i++) {
         if (bot.sessionAddUserRequest['sessions'][i].session_channel_id === sessionChannelId) {
             for (let j = 0; j < bot.sessionAddUserRequest['sessions'][i].requested.length; j++) {

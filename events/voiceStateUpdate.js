@@ -1,4 +1,4 @@
-const {renameNickname} = require('../otherFunctions/voiceNicknameUpdate.js');
+//const {renameNickname} = require('../otherFunctions/voiceNicknameUpdate.js');
 
 
 module.exports = (bot, oldState, newState) => {

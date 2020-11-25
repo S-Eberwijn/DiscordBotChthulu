@@ -1,4 +1,3 @@
-const {updateServerStatChannels} = require('../otherFunctions/updateServerStatChannel.js');
 
 module.exports = async (bot, member) => {
     // Update Server Stats channels

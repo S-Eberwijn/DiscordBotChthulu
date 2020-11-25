@@ -1,4 +1,3 @@
-const { updateServerStatChannels } = require('../otherFunctions/updateServerStatChannel.js');
 const { MessageAttachment } = require('discord.js');
 const Canvas = require('canvas');
 

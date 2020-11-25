@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args) => {
         doesSeeChannel(createdChannel, message.channel.guild.roles.everyone, false);
         doesSeeChannel(createdChannel, message.guild.roles.cache.find(role => role.name.includes('Dungeon Master')), true);
         doesSeeChannel(createdChannel, message.author, true);
-        
+
         createdChannel.send(createCreatedChannelEmbed(message)).then(() => {
             askAllCharacterCreationQuestions(createdChannel, newCharacterArray, message).then(() => {
                 createdChannel.send('Is this correct?', createNewCharacterEmbed(newCharacterArray)).then(async newCharacterEmbed => {
@@ -40,7 +40,6 @@ module.exports.run = async (bot, message, args) => {
                     }).then(async () => {
                         if (reactedEmoji === '✔️') {
                             await createdChannel.setName(newCharacterArray[0].toString());
-                            let newPlayer;
                             let foundPlayer = await Player.findOne({ where: { player_id: message.author.id, server_id: message.guild.id } })
                             if (foundPlayer) {
                                 let foundCharacter = await PlayerCharacter.findOne({ where: { player_id: message.author.id, alive: 1, server_id: message.guild.id } });
@@ -49,7 +48,7 @@ module.exports.run = async (bot, message, args) => {
                                     await foundCharacter.save();
                                 }
                             } else {
-                                newPlayer = await Player.create({
+                                await Player.create({
                                     player_id: message.author.id,
                                     player_name: message.author.username,
                                     server_id: message.guild.id
@@ -163,7 +162,7 @@ function characterCreationQuestion(question, createdChannel, newCharacterArray, 
                     return false;
                 }
                 characterCreationQuestions[2].answers.forEach(awnser => {
-                    if (!(awnser.toLowerCase() === response.content.toLowerCase())) {
+                    if (awnser.toLowerCase() !== response.content.toLowerCase()) {
                         wrongCounter++;
                     } else {
                         newCharacterClass = awnser;
@@ -172,7 +171,7 @@ function characterCreationQuestion(question, createdChannel, newCharacterArray, 
                 if (wrongCounter === characterCreationQuestions[2].answers.length) {
                     createdChannel.send('That is not an usable class! Try again!', classEmbed);
                 }
-                return ((characterCreationQuestions[2].answers.some(answer => answer.toLowerCase() === response.content.toLowerCase()) && response.author.id === message.author.id));
+                return (characterCreationQuestions[2].answers.some(answer => answer.toLowerCase() === response.content.toLowerCase()) && response.author.id === message.author.id);
             };
             createdChannel.send(question).then(() => {
                 createdChannel.awaitMessages(classFilter, {
@@ -210,7 +209,7 @@ function characterCreationQuestion(question, createdChannel, newCharacterArray, 
                     return false;
                 }
                 characterCreationQuestions[1].answers.forEach(awnser => {
-                    if (!(awnser.toLowerCase() === response.content.toLowerCase())) {
+                    if (awnser.toLowerCase() !== response.content.toLowerCase()) {
                         wrongCounter++;
                     } else {
                         newCharacterRace = awnser;
@@ -219,7 +218,7 @@ function characterCreationQuestion(question, createdChannel, newCharacterArray, 
                 if (wrongCounter === characterCreationQuestions[1].answers.length) {
                     createdChannel.send('That is not an usable race! Try again!', racesEmbed);
                 }
-                return ((characterCreationQuestions[1].answers.some(answer => answer.toLowerCase() === response.content.toLowerCase()) && response.author.id === message.author.id));
+                return (characterCreationQuestions[1].answers.some(answer => answer.toLowerCase() === response.content.toLowerCase()) && response.author.id === message.author.id);
             };
             createdChannel.send(question).then(function () {
                 createdChannel.awaitMessages(raceFilter, {
@@ -239,7 +238,7 @@ function characterCreationQuestion(question, createdChannel, newCharacterArray, 
             const ageFilter = response => {
                 if (response.author.id === '532524817740464138') {
                     return false;
-                } else if (typeof parseInt(response.content) === 'number' && isNaN(parseInt(response.content))) {
+                } else if (isNaN(parseInt(response.content))) {
                     createdChannel.send(`Please enter a number!`);
                     return false;
                 } else if (parseInt(response.content) < 0) {
@@ -344,7 +343,7 @@ function characterCreationQuestion(question, createdChannel, newCharacterArray, 
                     return false;
                 }
                 characterCreationQuestions[3].answers.forEach(awnser => {
-                    if (!(awnser.toLowerCase() === response.content.toLowerCase())) {
+                    if (awnser.toLowerCase() !== response.content.toLowerCase()) {
                         wrongCounter++;
                     } else {
                         newCharacterBackground = awnser;
@@ -353,7 +352,7 @@ function characterCreationQuestion(question, createdChannel, newCharacterArray, 
                 if (wrongCounter === characterCreationQuestions[3].answers.length) {
                     createdChannel.send('That is not an usable background! Try again!', backgroundEmbed);
                 }
-                return ((characterCreationQuestions[3].answers.some(answer => answer.toLowerCase() === response.content.toLowerCase()) && response.author.id === message.author.id));
+                return (characterCreationQuestions[3].answers.some(answer => answer.toLowerCase() === response.content.toLowerCase()) && response.author.id === message.author.id);
             };
             createdChannel.send(question).then(() => {
                 createdChannel.awaitMessages(backgroundFilter, {

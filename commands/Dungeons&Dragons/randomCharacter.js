@@ -7,7 +7,7 @@ let nameURL = "https://www.behindthename.com/random/random.php?number=2&sets=1&g
 
 let outputField;
 let charName, charRace, charClass, charFamily, charLifestyle;
-let charChildhood, charBackground, charMotivation, charOrigin;
+let charBackground, charMotivation, charOrigin;
 
 
 module.exports.run = async (bot, message, args) => {
@@ -33,7 +33,6 @@ module.exports.run = async (bot, message, args) => {
                     charRace = text[0].split('Race: ')[1];
                     charFamily = text[6].split('Family: ')[1];
                     charLifestyle = text[7].split('Lifestyle: ')[1];
-                    charChildhood = text[8].split('Childhood: ')[1];
                     charBackground = text[12].split('Background: ')[1];
                     charMotivation = text[13].split('Motivation: ')[1];
                     charClass = text[14].split('Class: ')[1];

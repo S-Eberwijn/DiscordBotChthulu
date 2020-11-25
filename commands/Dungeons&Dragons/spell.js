@@ -25,7 +25,7 @@ module.exports.help = {
     category: "Dungeons & Dragons"
 }
 
-function ProcesRequest(body, url) {
+function ProcesRequest(body) {
     let page = tagSelector.load(body);
     let content = page('h1[class=classic-title]').parent().text();
     let pageArray = content.split("\n");
@@ -84,7 +84,7 @@ function ritual(message, stringMessage) {
     });
     return;
 }
-function EmbedSpellInMessage(data, message, stringMessage) {
+function EmbedSpellInMessage(data, message) {
     let shortDescription;
     if (data.description.length > 1020) {
         shortDescription = `${data.description.substring(0, 1020)}...`
@@ -95,7 +95,7 @@ function EmbedSpellInMessage(data, message, stringMessage) {
         .setColor('#0099ff')
         .setTitle(data.title)
         .setDescription(data.school)
-        .setURL(baseURL + stringMessage)
+        .setURL(baseURL + message)
         .attachFiles(['./images/DnD/SpellSigils/' + data.school + '.png'])
         .setThumbnail('attachment://' + data.school + '.png')
         .addFields(

@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
 
     if (args[0].toLowerCase() == functionArguments[0].toLowerCase()) {
         if (!sessionRequestChannel) return message.channel.send('There is no \"session-request\" channel found on this server!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
-        if (!(message.channel.id === sessionRequestChannel.id)) return message.channel.send('Please send the request in the \"session-request\" channel!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
+        if (message.channel.id !== sessionRequestChannel.id) return message.channel.send('Please send the request in the \"session-request\" channel!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
         if (!message.guild.roles.cache.find(role => role.name.includes('Adventurer'))) return message.channel.send('Did not find a \"Adventurer\" role on this server. Please add one!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
         if (!message.guild.member(message.author).roles.cache.has(message.guild.roles.cache.find(role => role.name.includes('Adventurer')).id)) return message.channel.send('It seems like you do not have the \"Adventurer\" role! Get lost kid.').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
 
