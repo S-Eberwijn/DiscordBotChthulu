@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args) => {
-    let sumOfResults = 0, resultPerDie = 0, typeOfDie = 0, toBeAddedPostiveValue, toBeAddedNegativeValue;
+    let sumOfResults = 0, resultPerDie = 0, typeOfDie = 0, toBeAddedValue = 0, correctedRollString;
 
     if (!args[0]) return message.channel.send(`You didn\'t provide any arguments!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
 
@@ -9,49 +9,26 @@ module.exports.run = async (bot, message, args) => {
     if (isNaN(numberOfDice)) return message.channel.send(`Number of dice you want to roll is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
     if (!(numberOfDice < 25)) return message.channel.send(`Number of dice you want to roll can not be higher than 24!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
 
+
+    correctedRollString = message.content.replace(/ /g, "").slice(1 + this.help.name.length);
+
+    typeOfDie = parseInt(correctedRollString.split('d')[1]);
+    correctedRollString = correctedRollString.slice(parseInt(correctedRollString.split('d')[0]).toString().length + 1 + parseInt(correctedRollString.split('d')[1]).toString().length)
+
+    while (correctedRollString.charAt(0).includes('+') || correctedRollString.charAt(0).includes('-')) {
+        if (!correctedRollString.charAt(1)) return message.channel.send(`You did not type anything after the operator`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));;
+        switch (correctedRollString.charAt(0)) {
+            case '+':
+                toBeAddedValue += parseInt(correctedRollString.substring(1));
+                break;
+            case '-':
+                toBeAddedValue -= parseInt(correctedRollString.substring(1));
+                break;
+        }
+        correctedRollString = correctedRollString.slice(1 + parseInt(correctedRollString.substring(1)).toString().length);
+    }
+
     let outputEmbed = new MessageEmbed();
-
-    if (args[0].includes("+")) {
-        typeOfDie = parseInt(args[0].split("d")[1].split('+')[0]);
-        if (args[0].split("d")[1].split('+')[1]) {
-            toBeAddedPostiveValue = parseInt(args[0].split("d")[1].split('+')[1]);
-        } else if (args[1]) {
-            toBeAddedPostiveValue = parseInt(args[1]);
-        } else return message.channel.send(`You did not type anything after the \"+\"`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-        if (isNaN(toBeAddedPostiveValue)) return message.channel.send(`The amount you want to add is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-    } else if (args[1] && args[1].includes('+')) {
-        typeOfDie = parseInt(args[0].split("d")[1]);
-        if (args[1].length > 1) {
-            toBeAddedPostiveValue = parseInt(args[1].split('+')[1]);
-        } else {
-            if (!args[2]) return message.channel.send(`You did not type anything after the \"+\"`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-            toBeAddedPostiveValue = parseInt(args[2]);
-        }
-    } else {
-        typeOfDie = parseInt(args[0].split("d")[1]);
-    }
-
-
-    if (args[0].includes("-")) {
-        typeOfDie = parseInt(args[0].split("d")[1].split('-')[0]);
-        if (args[0].split("d")[1].split('-')[1]) {
-            toBeAddedNegativeValue = parseInt(args[0].split("d")[1].split('-')[1]);
-        } else if (args[1]) {
-            toBeAddedNegativeValue = parseInt(args[1]);
-        } else return message.channel.send(`You did not type anything after the \"-\"`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-        if (isNaN(toBeAddedNegativeValue)) return message.channel.send(`The amount you want to add is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-    } else if (args[1] && args[1].includes('-')) {
-        typeOfDie = parseInt(args[0].split("d")[1]);
-        if (args[1].length > 1) {
-            toBeAddedNegativeValue = parseInt(args[1].split('-')[1]);
-        } else {
-            if (!args[2]) return message.channel.send(`You did not type anything after the \"-\"`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-            toBeAddedNegativeValue = parseInt(args[2]);
-        }
-    } else {
-        typeOfDie = parseInt(args[0].split("d")[1]);
-    }
-
 
     if (isNaN(typeOfDie)) return message.channel.send(`The type of die you entered is not correct!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
     if (typeOfDie % 2 != 0) return message.channel.send(`The type of die you want to roll must be even!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
@@ -69,12 +46,12 @@ module.exports.run = async (bot, message, args) => {
             outputEmbed.addField('\u200b', '\u200b', true);
         }
     }
-    if (toBeAddedPostiveValue) {
-        outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie} + ${toBeAddedPostiveValue}!`);
-        outputEmbed.addField(`RESULT`, `[${sumOfResults} + ${toBeAddedPostiveValue}] = **${sumOfResults + toBeAddedPostiveValue}**`, false);
-    } else if (toBeAddedNegativeValue) {
-        outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie} - ${toBeAddedNegativeValue}!`);
-        outputEmbed.addField(`RESULT`, `[${sumOfResults} - ${toBeAddedNegativeValue}] = **${sumOfResults - toBeAddedNegativeValue}**`, false);
+    if (toBeAddedValue > 0) {
+        outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie} + ${Math.abs(toBeAddedValue)}!`);
+        outputEmbed.addField(`RESULT`, `[${sumOfResults} + ${Math.abs(toBeAddedValue)}] = **${sumOfResults + toBeAddedValue}**`, false);
+    } else if (toBeAddedValue < 0) {
+        outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie} - ${Math.abs(toBeAddedValue)}!`);
+        outputEmbed.addField(`RESULT`, `[${sumOfResults} - ${Math.abs(toBeAddedValue)}] = **${sumOfResults + toBeAddedValue}**`, false);
     } else {
         outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie}!`);
         outputEmbed.addField(`RESULT`, `**-= ${sumOfResults} =-**`, false);

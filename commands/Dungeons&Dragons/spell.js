@@ -8,7 +8,7 @@ module.exports.run = async (bot, message, args) => {
     stringMessage = stringMessage.replace(/ /g, "-");
     let url = baseURL + stringMessage;
     request(url, function (error, response, body) {
-        let data = ProcesRequest(body, url)
+        let data = ProcesRequest(body)
         if (data == "404") {
             ritual(message, stringMessage)
         }
@@ -72,7 +72,7 @@ function ritual(message, stringMessage) {
     stringMessage = stringMessage.replace(/ /g, "-").toLowerCase() + "-ritual";
     let url = baseURL + stringMessage;
     request(url, function (error, response, body) {
-        let data = ProcesRequest(body, url)
+        let data = ProcesRequest(body)
         /*console.log(data);*/
         if (data == "404") {
             message.channel.send("That spell was not found in the db");
