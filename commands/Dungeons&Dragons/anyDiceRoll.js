@@ -53,7 +53,7 @@ module.exports.run = async (bot, message, args) => {
 
     // Adding blank space(s) if the number of dice rolled is not equal to a multiple of 3
     if (getTotalAmountOfDiceToRoll(diceRollsArray) % 3 != 0) {
-        for (let i = 0; i < 2 - numberOfDice % 3; i++) {
+        for (let i = 0; i < 3 - getTotalAmountOfDiceToRoll(diceRollsArray) % 3; i++) {
             outputEmbed.addField('\u200b', '\u200b', true);
         }
     }
@@ -129,11 +129,11 @@ function setEmbedTitle(embedTitleString, toBeAddedValue, outputEmbed) {
     }
 }
 
-function getResultsPerType(){
+function getResultsPerType() {
     let returnString = `${resultsPerDieType[0]}`;
     for (let i = 1; i < resultsPerDieType.length; i++) {
-        if(resultsPerDieType[i] >= 0) returnString += ` + ${Math.abs(resultsPerDieType[i])}`;
-        if(resultsPerDieType[i] < 0) returnString += ` - ${Math.abs(resultsPerDieType[i])}`;
+        if (resultsPerDieType[i] >= 0) returnString += ` + ${Math.abs(resultsPerDieType[i])}`;
+        if (resultsPerDieType[i] < 0) returnString += ` - ${Math.abs(resultsPerDieType[i])}`;
 
     }
     return returnString;
