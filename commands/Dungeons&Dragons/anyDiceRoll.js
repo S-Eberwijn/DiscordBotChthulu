@@ -1,20 +1,43 @@
 const { MessageEmbed } = require('discord.js');
-
+let sumOfResults = 0, resultsPerDieType = [];
 module.exports.run = async (bot, message, args) => {
-    let sumOfResults = 0, resultPerDie = 0, typeOfDie = 0, toBeAddedValue = 0, correctedRollString;
-
-    if (!args[0]) return message.channel.send(`You didn\'t provide any arguments!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-
-    let numberOfDice = parseInt(args[0].split("d")[0]);
-    if (isNaN(numberOfDice)) return message.channel.send(`Number of dice you want to roll is not a number!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-    if (!(numberOfDice < 25)) return message.channel.send(`Number of dice you want to roll can not be higher than 24!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-
+    resetResults();
+    let typeOfDie = 0, toBeAddedValue = 0, correctedRollString, embedTitleString = `${message.author.username} is rolling `, outputEmbed = new MessageEmbed();
 
     correctedRollString = message.content.replace(/ /g, "").slice(1 + this.help.name.length);
 
-    typeOfDie = parseInt(correctedRollString.split('d')[1]);
-    correctedRollString = correctedRollString.slice(parseInt(correctedRollString.split('d')[0]).toString().length + 1 + parseInt(correctedRollString.split('d')[1]).toString().length)
+    let diceRollsArray = correctedRollString.match(/\d{1,24}d\d{1,100}/g);
+    if (typeof diceRollsArray === 'undefined' || diceRollsArray === null) return message.channel.send(`Incorrect arguments!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
 
+    //Every Dice That Has To Be Rolled!
+    for (let i = 0; i < diceRollsArray.length; i++) {
+        typeOfDie = parseInt(diceRollsArray[i].split('d')[1]);
+        numberOfDice = parseInt(diceRollsArray[i].split('d')[0]);
+
+        //Checks on each dice roll entry
+        if (typeOfDie % 2 != 0) return message.channel.send(`The type of die you want to roll must be even!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
+        if (!(getTotalAmountOfDiceToRoll(diceRollsArray) < 25)) return message.channel.send(`Number of dice you want to roll can not be higher than 24!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
+
+
+        switch (correctedRollString.charAt(0)) {
+            default:
+                rollDice(numberOfDice, typeOfDie, outputEmbed);
+                embedTitleString += `${diceRollsArray[i]}`;
+                correctedRollString = correctedRollString.slice(diceRollsArray[i].length);
+                break;
+            case '+':
+                rollDice(numberOfDice, typeOfDie, outputEmbed); embedTitleString += ` + ${diceRollsArray[i]}`;
+                correctedRollString = correctedRollString.slice(diceRollsArray[i].length + 1);
+                break;
+            case '-':
+                rollDice(numberOfDice, typeOfDie, outputEmbed, false);
+                embedTitleString += ` - ${diceRollsArray[i]}`;
+                correctedRollString = correctedRollString.slice(diceRollsArray[i].length + 1);
+                break;
+        }
+    }
+
+    //Determine the modifier
     while (correctedRollString.charAt(0).includes('+') || correctedRollString.charAt(0).includes('-')) {
         if (!correctedRollString.charAt(1)) return message.channel.send(`You did not type anything after the operator`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));;
         switch (correctedRollString.charAt(0)) {
@@ -28,35 +51,18 @@ module.exports.run = async (bot, message, args) => {
         correctedRollString = correctedRollString.slice(1 + parseInt(correctedRollString.substring(1)).toString().length);
     }
 
-    let outputEmbed = new MessageEmbed();
-
-    if (isNaN(typeOfDie)) return message.channel.send(`The type of die you entered is not correct!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-    if (typeOfDie % 2 != 0) return message.channel.send(`The type of die you want to roll must be even!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-
-
-    for (let i = 0; i < numberOfDice; i++) {
-        resultPerDie = calculateResultPerDie(typeOfDie);
-        outputEmbed.addField(`Die #${i + 1}`, `${showRightColourOfRolledDie(resultPerDie, typeOfDie)}`, true);
-        sumOfResults += resultPerDie;
-    }
-
     // Adding blank space(s) if the number of dice rolled is not equal to a multiple of 3
-    if (numberOfDice % 3 != 0) {
+    if (getTotalAmountOfDiceToRoll(diceRollsArray) % 3 != 0) {
         for (let i = 0; i < 3 - numberOfDice % 3; i++) {
             outputEmbed.addField('\u200b', '\u200b', true);
         }
     }
-    if (toBeAddedValue > 0) {
-        outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie} + ${Math.abs(toBeAddedValue)}!`);
-        outputEmbed.addField(`RESULT`, `[${sumOfResults} + ${Math.abs(toBeAddedValue)}] = **${sumOfResults + toBeAddedValue}**`, false);
-    } else if (toBeAddedValue < 0) {
-        outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie} - ${Math.abs(toBeAddedValue)}!`);
-        outputEmbed.addField(`RESULT`, `[${sumOfResults} - ${Math.abs(toBeAddedValue)}] = **${sumOfResults + toBeAddedValue}**`, false);
-    } else {
-        outputEmbed.setTitle(`${message.author.username} is rolling ${numberOfDice}d${typeOfDie}!`);
-        outputEmbed.addField(`RESULT`, `**-= ${sumOfResults} =-**`, false);
-    }
-    message.channel.send(outputEmbed).then().catch(console.error);
+
+    //Depending on what the modifiers result is, you'll get a different outcome
+    setEmbedTitle(embedTitleString, toBeAddedValue, outputEmbed);
+
+    //Send the embed to the channel the command was typed in
+    message.channel.send(outputEmbed).catch(console.error);
 }
 
 module.exports.help = {
@@ -77,4 +83,57 @@ function showRightColourOfRolledDie(resultPerDie, typeOfDie) {
     } else {
         return `\`\`\`md\n ${resultPerDie.toString()}\`\`\``;
     }
+}
+
+function rollDice(numberOfDice, typeOfDie, outputEmbed, shouldBeAdding) {
+    shouldBeAdding = (typeof shouldBeAdding !== 'undefined') ? shouldBeAdding : true;
+    let totalPerSet = 0;
+    for (let i = 0; i < numberOfDice; i++) {
+        let resultPerDie = calculateResultPerDie(typeOfDie);
+        outputEmbed.addField(`d${typeOfDie}`, `${showRightColourOfRolledDie(resultPerDie, typeOfDie)}`, true);
+        if (shouldBeAdding) {
+            sumOfResults += resultPerDie;
+            totalPerSet += resultPerDie;
+        } else {
+            sumOfResults -= resultPerDie;
+            totalPerSet -= resultPerDie;
+        }
+    }
+    resultsPerDieType.push(totalPerSet);
+
+}
+
+function resetResults() {
+    sumOfResults = 0;
+    resultsPerDieType = [];
+}
+
+function getTotalAmountOfDiceToRoll(diceRollsArray) {
+    let totalNumberOfDice = 0;
+    diceRollsArray.forEach(roll => {
+        totalNumberOfDice += parseInt(roll.split('d')[0]);
+    });
+    return totalNumberOfDice
+}
+
+function setEmbedTitle(embedTitleString, toBeAddedValue, outputEmbed) {
+    if (toBeAddedValue > 0) {
+        outputEmbed.setTitle(`${embedTitleString} + ${Math.abs(toBeAddedValue)}!`);
+        outputEmbed.addField(`RESULT`, `[${getResultsPerType()} + ${Math.abs(toBeAddedValue)}] = **${sumOfResults + toBeAddedValue}**`, false);
+    } else if (toBeAddedValue < 0) {
+        outputEmbed.setTitle(`${embedTitleString} - ${Math.abs(toBeAddedValue)}!`);
+        outputEmbed.addField(`RESULT`, `[${getResultsPerType()} - ${Math.abs(toBeAddedValue)}] = **${sumOfResults + toBeAddedValue}**`, false);
+    } else {
+        outputEmbed.setTitle(`${embedTitleString}!`);
+        outputEmbed.addField(`RESULT`, `[${getResultsPerType()}] = **${sumOfResults}**`, false);
+    }
+}
+
+function getResultsPerType(){
+    let returnString = "";
+    resultsPerDieType.forEach(number=> {
+        if(number >= 0) returnString += `${number} `;
+        if(number < 0) returnString += `- ${Math.abs(number)} `;
+    });
+    return returnString;
 }
