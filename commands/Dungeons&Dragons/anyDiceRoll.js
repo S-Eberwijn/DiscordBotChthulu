@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args) => {
         numberOfDice = parseInt(diceRollsArray[i].split('d')[0]);
 
         //Checks on each dice roll entry
-        if (typeOfDie % 2 != 0) return message.channel.send(`The type of die you want to roll must be even!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
+        //if (typeOfDie % 2 != 0) return message.channel.send(`The type of die you want to roll must be even!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
         if (!(getTotalAmountOfDiceToRoll(diceRollsArray) < 25)) return message.channel.send(`Number of dice you want to roll can not be higher than 24!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
 
 
