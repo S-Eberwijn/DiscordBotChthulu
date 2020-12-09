@@ -1,59 +1,59 @@
+const { paginationEmbed } = require('../../otherFunctions/paginationEmbed');
 const { MessageEmbed } = require('discord.js');
+let categorizedCommands;
+let iterationCounter;
 
 module.exports.run = async (bot, message, args) => {
-
-    let commandList = [];
-    var prefix = process.env.PREFIX;
-
-    bot.commands.forEach(command => {
-        let constructor = {
-            name: command.help.name,
-            description: command.help.description,
-            category: command.help.category
-        }
-
-        commandList.push(constructor);
-    });
-
-    let general = "";
-    let information = "";
-    let dungeonsAndDragons = "";
-    let miscellaneous = "";
-
-    for (let i = 0; i < commandList.length; i++) {
-        const command = commandList[i];
-
-        if (command["category"] == "General") {
-            general += `${prefix}${command["name"]} - ${command["description"]}\n`;
-        } else if (command["category"] == "Information") {
-            information += `${prefix}${command["name"]} - ${command["description"]}\n`;
-        } else if (command["category"] == "Dungeons & Dragons") {
-            dungeonsAndDragons += `${prefix}${command["name"]} - ${command["description"]}\n`;
-        } else if (command["category"] == "Miscellaneous") {
-            miscellaneous += `${prefix}${command["name"]} - ${command["description"]}\n`;
-        }
-    }
+    iterationCounter = 1;
     let helpEmbed = new MessageEmbed()
         .setAuthor('Chthulu Commands', bot.user.displayAvatarURL())
-        //.setTitle('Chthulu Commands');
-    if (general != "") {
-        helpEmbed.addField("**__General__**\n", general);
-    }
-    if (information != "") {
-        helpEmbed.addField("**__Information__**\n", information)
-    }
-    if (dungeonsAndDragons != "") {
-        helpEmbed.addField("**__Dungeons & Dragons__**\n", dungeonsAndDragons)
-    }
-    if (miscellaneous != "") {
-        helpEmbed.addField("**__Miscellaneous__**\n", miscellaneous)
+        .setThumbnail(`https://upload.wikimedia.org/wikipedia/commons/3/38/4-Nature-Wallpapers-2014-1_ukaavUI.jpg`)
+
+    let pages = [];
+
+    if (!args[0]) {
+        categorizedCommands = bot.commands.reduce((r, a) => {
+            r[a.help.category] = [...r[a.help.category] || [], a];
+            return r;
+        }, {})
+
+        Object.keys(categorizedCommands).forEach(key => {
+            helpEmbed.setDescription(`\`\`\`${key}\`\`\``)
+            categorizedCommands[key].forEach(command => {
+                if (helpEmbed.fields.length === 24) {
+                    pages.push(helpEmbed);
+                    helpEmbed = new MessageEmbed()
+                        .setAuthor('Chthulu Commands', bot.user.displayAvatarURL())
+                        .setDescription(`\`\`\`${key}\`\`\``);
+                }
+                helpEmbed.addField(`\u200b`, `${process.env.PREFIX}${command.help.name}`, true);
+                helpEmbed.addField('\u200b', '\u200b', true);
+                helpEmbed.addField('\u200b', `${command.help.description}`, true);
+            })
+            pages.push(helpEmbed);
+            helpEmbed = new MessageEmbed()
+                .setAuthor('Chthulu Commands', bot.user.displayAvatarURL());
+        });
+        paginationEmbed(message, pages).catch(err => {
+            message.channel.send("Something went wrong, contact my master...");
+            console.log(err)
+        });
+    } else {
+        if (!bot.commands.has(args[0])) return message.channel.send('I do not posses that command...').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
+        let command = bot.commands.get(args[0]);
+        helpEmbed.setDescription(`
+        **__Command name:__** ${process.env.PREFIX}${command.help.name}
+        **__Command description:__** ${command.help.description}
+        **__Command usage:__** ${command.help.usage || `No additional parameter(s)`}
+        **__Command permissions:__** ${command.help.permissions || `No additional permissions needed`}
+        `)
+        console.log(command);
+        message.channel.send(helpEmbed).catch(err => {
+            message.channel.send("Something went wrong, contact my master...");
+            console.log(err)
+        })
     }
 
-    message.author.send(helpEmbed).then(() => {
-        message.channel.send("You can find the commands in a personal DM! :mailbox_with_mail:");
-    }).catch(() => {
-        message.channel.send("Something went wrong, turn on your personal messages");
-    });
 }
 
 module.exports.help = {

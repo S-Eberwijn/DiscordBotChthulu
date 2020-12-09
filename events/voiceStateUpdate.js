@@ -2,7 +2,7 @@
 
 
 module.exports = (bot, oldState, newState) => {
-    console.log(newState.guild.id);
+    //console.log(newState.guild.id);
     /*
     renameNickname(oldState, newState);
     */

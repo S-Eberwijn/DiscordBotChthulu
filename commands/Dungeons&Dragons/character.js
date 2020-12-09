@@ -6,7 +6,6 @@ module.exports.run = async (bot, message, args) => {
     const user = message.mentions.users.first() || message.author;
     //Searches the database for a valid character
     let character = await PlayerCharacter.findOne({ where: { player_id: user.id, alive: 1, server_id: message.guild.id } })
-
     //If a character is linked to the user, return a character card
     if (!character) return message.channel.send('This user does not have a character!').then(msg => msg.delete({ timeout: 3000 })).catch(err => console.log(err));
     const characterEmbed = new MessageEmbed()
@@ -22,12 +21,11 @@ module.exports.run = async (bot, message, args) => {
             { name: '\*\*BACKGROUND\*\*', value: `${character.get('background')}`, inline: true }
         );
     message.channel.send(characterEmbed);
-
 }
 
 module.exports.help = {
     name: "character",
-    description: "Displays your (or the user you mentioned) character!",
+    description: "Displays your character!",
     category: "Dungeons & Dragons"
 }
 

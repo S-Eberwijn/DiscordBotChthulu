@@ -2,10 +2,12 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args) => {
     let botCreation = bot.user.createdAt.toString().split(' ');
+    console.log(bot.users.cache.find(user => user.id === '228499662607351809'))
 
     var botEmbed = new MessageEmbed()
+        //todo fix username
         .setAuthor(`🤖 ${bot.user.username}#${bot.user.discriminator} 🤖`)
-        .setDescription(`I am here to serve my masters: \*\*${bot.users.cache.find(user => user.id === '241273372892200963').username}\*\* & \*\*${bot.users.cache.find(user => user.id === '228499662607351809').username}\*\*`)
+        .setDescription(`I am here to serve my master: \*\*${bot.users.cache.find(user => user.id === '241273372892200963').username}\*\*`)
         .setColor("#29e53f")
         .addField("\_\_\*\*DESCIPTION\*\*\_\_", "---------------------------------------------------------------------------\nDeep in the sea. I wanna swim. Leaving my worries. Far away from me. I need a break. I need to close my eyes. Go far away. And see the ancient skies. I need to know. If I'm still alive. Go far away. And see my roots are fine\n---------------------------------------------------------------------------")
         .setThumbnail(bot.user.displayAvatarURL())
@@ -16,7 +18,7 @@ module.exports.run = async (bot, message, args) => {
         .addFields(
             { name: '\_\_\*\*RESURRECTIONS\*\*\_\_', value: `I've been summoned \*\*${bot.ressurection['resurrections'].count}\*\* times`, inline: true },
             { name: '\_\_\*\*TIME ALIVE\*\*\_\_', value: `${calculateUptimeBot(bot)}`, inline: false },
-            { name: '\u200B', value: '\u200B', inline: true}
+            { name: '\u200B', value: '\u200B', inline: true }
         )
         .addField("\_\_\*\*CREATED AT\*\*\_\_", `${botCreation[0]}, ${botCreation[1]} ${botCreation[2]} ${botCreation[3]} ${botCreation[4]}`);
     return message.channel.send(botEmbed);
@@ -24,7 +26,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "chthulu",
-    description: "Gives information about the bot",
+    description: "Information about the bot",
     category: "Information"
 }
 

@@ -558,6 +558,11 @@
             "session_channel_id": "770721580778913832",
             "requested": [],
             "denied": []
+        },
+        {
+            "session_channel_id": "784781701406654484",
+            "requested": [],
+            "denied": []
         }
     ]
 }

@@ -1,7 +1,7 @@
 const GeneralInfo = require('../../database/models/GeneralInfo');
 
 module.exports.run = async (bot, message, args) => {
-
+    //
     if (!args[0]) return message.reply("Not enough valid arguments\nCorrect format: !addCharacterChannel <Channel Name>");
     if (!message.guild.channels.cache.find(channel => channel.name === `${args[0]}`)) return message.reply("**ERROR**: There is no such channel. Maybe you made a typo?");
     let channelID = message.guild.channels.cache.find(channel => channel.name === `${args[0]}`).id;
@@ -22,6 +22,6 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "addCharacterChannel",
-    description: "Add an in-character channel",
+    description: "Add in-character channel",
     category: "Dungeons & Dragons"
 }

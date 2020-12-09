@@ -57,7 +57,7 @@ module.exports = async (bot, messageReaction, user) => {
                         message.delete();
                         return;
                     } else return message.reactions.resolve(emoji.id).users.remove(user.id).catch(err => console.log(err));
-                } else if (message.guild.member(user).roles.cache.has(playerRole.id)) {
+                } else if (message.guild.member(user).roles.cache.has(playerRole)) {
                     if (emoji.name.includes('adduser')) {
                         message.reactions.resolve(emoji.id).users.remove(user.id).catch(err => console.log(err));
                         await SessionRequest.findOne({ where: { message_id: message.id } }).then(async sessionRequest => {
@@ -173,7 +173,10 @@ module.exports = async (bot, messageReaction, user) => {
                 }
             }
         }
-    } else console.log('Dit was een dm')
+    } else {
+        //message.reactions.resolve(emoji.id).users.remove(user.id).catch(err => console.log(err))
+        //console.log('Dit was een dm')
+    }
 }
 
 String.prototype.replaceAt = function (index, replacement) {
