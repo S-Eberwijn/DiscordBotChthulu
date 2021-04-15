@@ -21,6 +21,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "spell",
+    alias: [],
     description: "Returns a spell in an embed",
     category: "Dungeons & Dragons"
 }

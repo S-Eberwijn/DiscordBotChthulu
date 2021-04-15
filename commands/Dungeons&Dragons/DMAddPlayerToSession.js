@@ -61,6 +61,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "add",
+    alias: [],
     description: "The Dungeon Master can use this to add a player to a session!",
     category: "Dungeons & Dragons"
 }

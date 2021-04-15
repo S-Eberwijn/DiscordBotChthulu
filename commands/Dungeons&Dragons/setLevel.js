@@ -16,6 +16,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "setLevel",
+    alias: [],
     description: "A DM can set a players character level",
     category: "Dungeons & Dragons"
 }

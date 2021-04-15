@@ -54,6 +54,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "stupid",
+    alias: [],
     description: "Whenever someone asks a stupid question, DM's use this command",
     category: "Dungeons & Dragons"
 }

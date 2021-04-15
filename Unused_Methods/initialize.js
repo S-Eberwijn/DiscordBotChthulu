@@ -9,7 +9,6 @@ module.exports.run = async (bot, message, args) => {
     guild = message.guild;
 
     //Create Verify-Message
-   
     if (args[0]) {
         let verifiedRole = message.guild.roles.cache.find(role => role.name === "Verified");
 
@@ -65,10 +64,9 @@ module.exports.run = async (bot, message, args) => {
                 });
             }).then(async () => {
                 await createChannel(`verify`, "text", "--VERIFICATION--", bot).then(channel => {
-                   
                 });
             });
-         } 
+        } 
         //else if (args[0].toUpperCase() == "serverstats".toUpperCase()) {
         //     console.log("making serverstat channels");
         //     message.guild.channels.create('--SERVER STATS--', {

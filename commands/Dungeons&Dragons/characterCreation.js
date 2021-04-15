@@ -85,6 +85,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "createCharacter",
+    alias: ["cc"],
     description: "Creates a new channel with questions about your new character",
     category: "Dungeons & Dragons"
 }

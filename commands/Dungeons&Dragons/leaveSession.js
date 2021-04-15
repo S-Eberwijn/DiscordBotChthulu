@@ -62,6 +62,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "leave",
+    alias: [],
     description: "Use this in a session-channel to leave that session",
     category: "Dungeons & Dragons"
 }

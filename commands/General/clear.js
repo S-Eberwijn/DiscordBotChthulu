@@ -18,6 +18,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "clear",
+    alias: [],
     description: "Clears n-number of messages",
     category: "General"
 }

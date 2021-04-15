@@ -85,6 +85,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "poll",
+    alias: [],
     description: "Create a simple yes or no poll",
     category: "General"
 }

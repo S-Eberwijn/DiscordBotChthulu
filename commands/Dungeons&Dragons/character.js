@@ -25,6 +25,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "character",
+    alias: ["c", "char"],
     description: "Displays your character!",
     category: "Dungeons & Dragons"
 }

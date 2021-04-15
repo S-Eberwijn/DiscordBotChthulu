@@ -69,6 +69,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "kick",
+    alias: [],
     description: "The Dungeon Master can use this to kick a player from a session!",
     category: "Dungeons & Dragons"
 }

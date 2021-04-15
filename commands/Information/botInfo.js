@@ -1,8 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args) => {
+    message.delete();
     let botCreation = bot.user.createdAt.toString().split(' ');
-    console.log(bot.users.cache.find(user => user.id === '228499662607351809'))
 
     var botEmbed = new MessageEmbed()
         //todo fix username
@@ -20,12 +20,13 @@ module.exports.run = async (bot, message, args) => {
             { name: '\_\_\*\*TIME ALIVE\*\*\_\_', value: `${calculateUptimeBot(bot)}`, inline: false },
             { name: '\u200B', value: '\u200B', inline: true }
         )
-        .addField("\_\_\*\*CREATED AT\*\*\_\_", `${botCreation[0]}, ${botCreation[1]} ${botCreation[2]} ${botCreation[3]} ${botCreation[4]}`);
+        .addField("\_\_\*\*CREATED AT\*\*\_\_", `${botCreation[0]}, ${botCreation[1]} ${botCreation[2]} ${botCreation[3]} ${botCreation[4]}`)
     return message.channel.send(botEmbed);
 }
 
 module.exports.help = {
     name: "chthulu",
+    alias: [],
     description: "Information about the bot",
     category: "Information"
 }

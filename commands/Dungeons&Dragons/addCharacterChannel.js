@@ -22,6 +22,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "addCharacterChannel",
+    alias: [],
     description: "Add in-character channel",
     category: "Dungeons & Dragons"
 }

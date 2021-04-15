@@ -13,5 +13,5 @@ module.exports = async (bot, message) => {
 
     if (messageArray[0].charAt(0) === prefix.charAt(0)) {
         if (commands) commands.run(bot, message, arguments);
-    }
+    } 
 }

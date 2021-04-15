@@ -21,7 +21,7 @@ exports.paginationEmbed = async function(msg, pages, emojiList = ['⏪', '⏩'],
 			default:
 				break;
 		}
-		curPage.edit(pages[page].setFooter(`Page ${page + 1} / ${pages.length}`));
+		curPage.edit(pages[page].setFooter(`Page ${page + 1} / ${pages.length}       For more info use !help {command}`));
 	});
 	reactionCollector.on('end', () => {
 		if (!curPage.deleted) {

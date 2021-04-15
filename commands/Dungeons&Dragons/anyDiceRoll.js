@@ -3,8 +3,7 @@ let sumOfResults = 0, resultsPerDieType = [];
 module.exports.run = async (bot, message, args) => {
     resetResults();
     let typeOfDie = 0, toBeAddedValue = 0, correctedRollString, embedTitleString = `${message.author.username} is rolling `, outputEmbed = new MessageEmbed();
-
-    correctedRollString = message.content.replace(/ /g, "").slice(1 + this.help.name.length);
+    correctedRollString = message.content.replace(/ /g, "").slice(message.content.indexOf(message.content.match(/\d/)) - 1);
 
     let diceRollsArray = correctedRollString.match(/\d{1,24}d\d{1,100}/g);
     if (typeof diceRollsArray === 'undefined' || diceRollsArray === null) return message.channel.send(`Incorrect arguments!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
@@ -17,7 +16,6 @@ module.exports.run = async (bot, message, args) => {
         //Checks on each dice roll entry
         //if (typeOfDie % 2 != 0) return message.channel.send(`The type of die you want to roll must be even!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
         if (!(getTotalAmountOfDiceToRoll(diceRollsArray) < 25)) return message.channel.send(`Number of dice you want to roll can not be higher than 24!`).then(msg => msg.delete({ timeout: 5000 })).catch(err => console.log(err));
-
 
         switch (correctedRollString.charAt(0)) {
             default:
@@ -67,6 +65,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "roll",
+    alias: ["r"],
     description: "Roll ANY dice!",
     category: "Dungeons & Dragons"
 }

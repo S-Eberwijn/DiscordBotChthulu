@@ -7,8 +7,6 @@ exports.writeToJsonDb = function(fileName, obj) {
         if (err) throw err;
         console.log("Succesfully saved to [" + nameTrackerJson + "]!")
     });
-
-   
 }
 
 
