@@ -2,6 +2,8 @@ require('dotenv').config();
 const { Client } = require('discord.js');
 const fs = require("fs");
 const Enmap = require('enmap');
+const keep_alive = require('./keep_alive.js')
+
 
 
 
@@ -49,5 +51,4 @@ fs.readdir('./events/', (err, files) => {
         bot.on(evtName, evt.bind(null, bot));
     });
 });
-
 bot.login(`${process.env.TOKEN}`);
